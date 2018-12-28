@@ -8,7 +8,8 @@ $(function() {
             {field:'id',title:'序号',width:40,sortable:true},
             {field:'name',title:'名称',width:200},
             {field:'seq',title:'排序',width:80},
-            {field:'createTime',title:'创建时间',width:140,sortable:true}
+            {field:'createTime',title:'创建时间',width:140,sortable:true},
+            {field:'cmd',title:'命令',width:200}
         ]],
         toolbar : '#orgToolbar'
     });
@@ -35,6 +36,7 @@ var jobType={
 								var param = {};
 								param.name = $.trim($("#jobType").val());
 								param.seq = $("#seq").val();
+								param.cmd = $("#cmd").val();
 								if(param.name==""){
 									$.messager.alert("警告", "名称不能为空","error");  
 									return;
@@ -62,6 +64,7 @@ var jobType={
 		var row = jobType.getJobTypeSelectRow();
 		$("#jobType").textbox("setValue",row.name);
 		$("#seq").numberspinner("setValue",row.seq);
+		$("#cmd").textbox("cmd",row.cmd);
 		$("#addJobType").show().dialog(
 				{
 					title:"修改",
@@ -75,6 +78,7 @@ var jobType={
 								var param = {};
 								param.id = row.id;
 								param.name = $.trim($("#jobType").val());
+								param.cmd = $.trim($("#cmd").val());
 								param.seq = $("#seq").numberspinner("getValue");
 								if(param.name==""){
 									$.messager.alert("警告", "名称不能为空","error");  

@@ -22,6 +22,7 @@
 		<div>名称<input id="jobType"  class="easyui-textbox"  data-options="required:true" />	</div>
 		<div style="margin-top:10px">排序<input id="seq" value="10"  class="easyui-numberspinner" 
 		style="width: 140px; height: 29px;" required="required" data-options="editable:false"></div>
+		<div>命令<input id="cmd"  class="easyui-textbox"  />	</div>
 	</div>
 </body>
 <script src="${path}/static/job/jobType.js?ttime=20170905"></script>
