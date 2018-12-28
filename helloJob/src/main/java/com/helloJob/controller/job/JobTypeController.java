@@ -23,7 +23,7 @@ public class JobTypeController extends BaseController {
 	}
 	@RequestMapping("/add")
 	@ResponseBody
-	public Object add(@RequestParam String name,@RequestParam Integer seq,String cmd) {
+	public Object add(@RequestParam String name,@RequestParam Integer seq,@RequestParam String cmd) {
 		JobType jobType = new JobType();
 		jobType.setName(name);
 		jobType.setSeq(seq);
