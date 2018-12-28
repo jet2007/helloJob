@@ -23,10 +23,11 @@ public class JobTypeController extends BaseController {
 	}
 	@RequestMapping("/add")
 	@ResponseBody
-	public Object add(@RequestParam String name,@RequestParam Integer seq) {
+	public Object add(@RequestParam String name,@RequestParam Integer seq,String cmd) {
 		JobType jobType = new JobType();
 		jobType.setName(name);
 		jobType.setSeq(seq);
+		jobType.setCmd(cmd);
 		jobType.setCreateTime(DateUtils.getCreateTime());
 		jobTypeService.add(jobType );
 		return renderSuccess();
