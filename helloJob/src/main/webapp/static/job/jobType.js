@@ -36,7 +36,7 @@ var jobType={
 								var param = {};
 								param.name = $.trim($("#jobType").val());
 								param.seq = $("#seq").val();
-								param.cmd = $("#cmd").val();
+								param.name = $.trim($("#cmd").val());
 								if(param.name==""){
 									$.messager.alert("警告", "名称不能为空","error");  
 									return;
@@ -63,8 +63,8 @@ var jobType={
 	update:function(){
 		var row = jobType.getJobTypeSelectRow();
 		$("#jobType").textbox("setValue",row.name);
+		$("#cmd").textbox("setValue",row.cmd);
 		$("#seq").numberspinner("setValue",row.seq);
-		$("#cmd").textbox("cmd",row.cmd);
 		$("#addJobType").show().dialog(
 				{
 					title:"修改",
