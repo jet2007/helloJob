@@ -15,4 +15,6 @@ public interface JobTypeService {
 	public  List<JobType>  combobox();
 
 	public void update(JobType jobType);
+	
+	public JobType get(Long id);
 }

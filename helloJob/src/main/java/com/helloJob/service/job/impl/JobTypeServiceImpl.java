@@ -43,5 +43,10 @@ public class JobTypeServiceImpl extends ServiceImpl<JobTypeMapper, JobType> impl
 	public String getName(Long id) {
 		return jobTypeMapper.selectById(id).getName();
 	}
+	
+	@Override
+	public JobType get(Long id) {
+		return jobTypeMapper.selectById(id);
+	}
 
 }

@@ -11,8 +11,10 @@ import org.apache.logging.log4j.Logger;
 import com.helloJob.model.job.HostInfo;
 import com.helloJob.model.job.JobBasicInfo;
 import com.helloJob.model.job.JobLog;
+import com.helloJob.model.job.JobType;
 import com.helloJob.service.job.HostInfoService;
 import com.helloJob.service.job.JobLogService;
+import com.helloJob.service.job.JobTypeService;
 import com.helloJob.utils.ApplicationContextUtil;
 import com.helloJob.vto.JobExecResult;
 import com.helloJob.vto.RunningJobInfo;
@@ -28,6 +30,7 @@ public class SshUtils {
 	public static JobExecResult execute(JobBasicInfo job, Integer dt) {
 		JobLogService jobLogService = ApplicationContextUtil.getContext().getBean(JobLogService.class);
 		HostInfoService hostInfoService = ApplicationContextUtil.getContext().getBean(HostInfoService.class);
+		JobTypeService jobTypeService = ApplicationContextUtil.getContext().getBean(JobTypeService.class);
 		JobLog jobLog = jobLogService.addRunningLog(job.getId(), dt, job);
 		JobExecResult jobExecResult = new JobExecResult();
 		try {
@@ -36,10 +39,18 @@ public class SshUtils {
 			String userName = hostInfo.getUsername();// 用户名
 			String password = hostInfo.getPasswd();// 密码
 			int port = hostInfo.getPort();// 端口号
+			
+			//获取Job类型
+			JobType jobType = jobTypeService.get(job.getJobType());
+			
 			JSch jsch = new JSch(); // 创建JSch对象
 			// String cmd = "hive -e \"select id,count(1) from stu group by id\"";// 要运行的命令
-			String cmd = StrUtil.replaceChars(job.getCommand(), "\r\n", "");
-			logger.info("执行命令:" + cmd);
+			//String cmd = StrUtil.replaceChars(job.getCommand(), "\r\n", "");
+			String cmd = job.getCommand();
+			logger.info("执行命令:[" + cmd+"]");
+			
+			logger.info(String.format("jobtype-cmd=[%s]\ncmd-detail=[%s]",jobType.getCmd(),cmd));
+			
 			Session session = jsch.getSession(userName, host, port);
 			// 根据用户名，主机ip，端口获取一个Session对象
 			session.setPassword(password); // 设置密码
