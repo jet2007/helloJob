@@ -28,8 +28,7 @@ public class JobTypeController extends BaseController {
 		JobType jobType = new JobType();
 		jobType.setName(name);
 		jobType.setSeq(seq);
-		//jobType.setCmd(cmd);
-		jobType.setCmd(StringEscapeUtils.unescapeHtml(cmd));
+		jobType.setCmd(StringEscapeUtils.unescapeHtml(cmd)); //html转义
 		jobType.setCreateTime(DateUtils.getCreateTime());
 		jobTypeService.add(jobType );
 		return renderSuccess();
@@ -38,6 +37,7 @@ public class JobTypeController extends BaseController {
 	@ResponseBody
 	public Object update(JobType jobType ) {
 		jobType.setCreateTime(DateUtils.getCreateTime());
+		jobType.setCmd(StringEscapeUtils.unescapeHtml(jobType.getCmd())); //html转义
 		jobTypeService.update(jobType );
 		return renderSuccess();
 	}
