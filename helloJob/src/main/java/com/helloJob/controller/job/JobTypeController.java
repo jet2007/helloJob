@@ -39,6 +39,7 @@ public class JobTypeController extends BaseController {
 	public Object update(JobType jobType ) {
 		jobType.setCreateTime(DateUtils.getCreateTime());
 		logger.info(getStaffName()+"更新作业信息:"+JSON.toJSONString(jobType));
+		logger.info("job-cmd=["+jobType.getCmd()+"]");
 		jobType.setCmd(StringEscapeUtils.unescapeHtml(jobType.getCmd())); //html转义
 		jobTypeService.update(jobType );
 		return renderSuccess();
