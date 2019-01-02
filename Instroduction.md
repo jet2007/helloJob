@@ -67,13 +67,26 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
 
 
 
-#### 作业类型的自定义开发(未完成！)
+#### 作业类型的自定义开发
 
-* JobTypeController.java
-* JobType.java
-* JobTypeService及impl.java
-* jobType.jsp
-* jobType.js
+- 自定义开发作业类型
+
+  - 作业类型增加一个命令列；实现自定义操作不同类型的作业，包括一个参数(%s,用String.format方法实现)；
+  - 如示例2，则在job定义内容中，只需要填写业务sql逻辑即可
+
+  > 示例内容1： echo "shell 00001---"; %s
+  >
+  > 示例内容2： hive -e "%s"
+
+- 修改文件
+  - JobTypeController.java
+  - JobType.java
+  - JobTypeService及impl.java
+  - jobType.jsp
+  - jobType.js
+  - jobType表结构
+
+- 目测已完成
 
 
 

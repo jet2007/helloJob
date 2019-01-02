@@ -120,7 +120,7 @@ table.pgTable td.tdTitle{
 		
 		      <li>
 				  	<div class="cmd" >
-				  	 	执行命令	  <input class="easyui-textbox" label="hive sql"  name="command" multiline="true" prompt="请输入要执行的命令" style="width:700px;height:120px">
+				  	 	执行命令	  <input class="easyui-textbox" label="hive sql"  name="command" multiline="true" prompt="请输入要执行的命令" style="width:700px;height:240px">
 				  	</div>
 			  </li>
 		
