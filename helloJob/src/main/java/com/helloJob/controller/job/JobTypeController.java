@@ -1,5 +1,6 @@
 package com.helloJob.controller.job;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,8 @@ public class JobTypeController extends BaseController {
 		JobType jobType = new JobType();
 		jobType.setName(name);
 		jobType.setSeq(seq);
-		jobType.setCmd(cmd);
+		//jobType.setCmd(cmd);
+		jobType.setCmd(StringEscapeUtils.unescapeHtml(cmd));
 		jobType.setCreateTime(DateUtils.getCreateTime());
 		jobTypeService.add(jobType );
 		return renderSuccess();

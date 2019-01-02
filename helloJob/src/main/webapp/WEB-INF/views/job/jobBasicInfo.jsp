@@ -88,11 +88,7 @@ table.pgTable td.tdTitle{
 			  	<input id="jobType"  name="jobType" class="easyui-combobox"  style="width:150px"
    			 data-options="panelWidth:150,valueField:'id',textField:'name',url:'${path}/jobType/combobox',required:true">
 			  </li>
-			  <li>
-				  	<div class="cmd" >
-				  	 	执行命令	  <input class="easyui-textbox" label="hive sql"  name="command" multiline="true" prompt="请输入要执行的命令" style="width:700px;height:120px">
-				  	</div>
-			  </li>
+
 			 <li id="">
 			 执行主机&nbsp;<select class="easyui-combogrid hostId"  name="hostId" data-options="required:true,panelHeight:'auto',idField:'id',textField:'host',url:' ${staticPath}/host/getAllList' 
 			  ,panelWidth:270
@@ -121,6 +117,13 @@ table.pgTable td.tdTitle{
 			  <!--   <span style="">作业执行失败时，第一责任人（创建人），第二责任人是直接收件人。第三之后责任人是抄送</span> -->
 		  </li>
 		<li><span style="margin-left:25px;margin-right:5px">备注</span><input name="remark" class="easyui-textbox" style="width:600px" ></li>
+		
+		      <li>
+				  	<div class="cmd" >
+				  	 	执行命令	  <input class="easyui-textbox" label="hive sql"  name="command" multiline="true" prompt="请输入要执行的命令" style="width:700px;height:120px">
+				  	</div>
+			  </li>
+		
 		 </ul>
 	</form>
 </div>
