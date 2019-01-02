@@ -7,7 +7,7 @@ $(function() {
         columns:[[
             {field:'id',title:'序号',width:40,sortable:true},
             {field:'name',title:'名称',width:200},
-            {field:'cmd',title:'命令',width:200},
+            {field:'cmd',title:'命令',width:5000},
             {field:'seq',title:'排序',width:80},
             {field:'createTime',title:'创建时间',width:140,sortable:true}
         ]],
@@ -36,7 +36,7 @@ var jobType={
 								var param = {};
 								param.name = $.trim($("#jobType").val());
 								param.seq = $("#seq").val();
-								param.cmd = $.trim($("#cmd").val());
+								param.cmd = $("#cmd").val();
 								if(param.name==""){
 									$.messager.alert("警告", "名称不能为空","error");  
 									return;
@@ -78,7 +78,7 @@ var jobType={
 								var param = {};
 								param.id = row.id;
 								param.name = $.trim($("#jobType").val());
-								param.cmd = $.trim($("#cmd").val());
+								param.cmd = $("#cmd").val();
 								param.seq = $("#seq").numberspinner("getValue");
 								if(param.name==""){
 									$.messager.alert("警告", "名称不能为空","error");  
