@@ -58,6 +58,17 @@ var easyuiUtils = {
 				easyuiUtils.validateParam(param,name,options);
 			}
 		});
+		
+		//获取easyui-datetimebox
+		$("#"+domId+" .easyui-datetimebox").each(function(index,dom){
+			if($(this).next().is(":visible")){
+				var name = $(this).attr("textboxname"); 
+				var options = $(this).datebox("options");
+				param[name] =  $(this).datebox("getValue");
+				easyuiUtils.validateParam(param,name,options);
+			}
+		});
+		
 		//easyui-numberbox
 		$("#"+domId+" .easyui-numberbox").each(function(index,dom){
 			if($(this).next().is(":visible")){
@@ -83,7 +94,7 @@ var easyuiUtils = {
 			var defaultValue = $this.attr("defaultvalue");
 			if(defaultValue)	$this.textbox("setValue",defaultValue);
 		});
-		$("#"+domId+" .easyui-datebox").each(function(index,dom){
+		$("#"+domId+" .easyui-datetimebox").each(function(index,dom){
 			$(this).datebox("clear");
 		});
 		$("#"+domId+" .easyui-numberbox").each(function(index,dom){
@@ -126,7 +137,7 @@ var easyuiUtils = {
 			}
 		});*/
 		
-		$("#"+domId+" .easyui-datebox").each(function(index,dom){
+		$("#"+domId+" .easyui-datetimebox").each(function(index,dom){
 			var name = $(this).attr("textboxname"); 
 			if($(this).next().is(":visible")){
 				var value = data[name];

@@ -35,10 +35,15 @@ public class DateUtils {
 	/**
 	 * 获取昨天日期，返回格式yyyyMMdd
 	 * **/
-	public static int getYesterday(){
+	
+	public static Long getYesterday(){
 		Date yesterday = addDay(new Date() , -1);
-		return Integer.parseInt(getFormatDate(yesterday, "yyyyMMdd"));
+		int a= Integer.parseInt(getFormatDate(yesterday, "yyyyMMdd"));
+		return Long.valueOf(a) *1000000; //原来是返回int
 	}
+	
+	
+	
 	public static String getYesterday(String format){
 		Date yesterday = addDay(new Date() , -1);
 		return getFormatDate(yesterday, format);

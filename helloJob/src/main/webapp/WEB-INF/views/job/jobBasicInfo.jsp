@@ -131,11 +131,11 @@ table.pgTable td.tdTitle{
 	<div style="margin:5px 0 0 5px">
 		<div>
 			开始时间
-    	  	<input name="beginTime" type="text" class="easyui-datebox"   />
+    	  	<input name="beginTime" type="text" class="easyui-datetimebox"   />
 		</div>
 		<div style="margin:5px 0">
 			结束时间
-    	  	<input name="endTime" type="text" class="easyui-datebox" />
+    	  	<input name="endTime" type="text" class="easyui-datetimebox" />
 		</div>
 		<div>自依赖
 		  		<select name="isSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60" required>
@@ -245,7 +245,7 @@ table.pgTable td.tdTitle{
 </div>
 <div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:300px;height:250px;padding:10px"
 	 data-options="closed:'true' ">
-	<div>选择dt<input id="runOnceDt"  class="easyui-datebox" /></div>
+	<div>选择dt<input id="runOnceDt"  class="easyui-datetimebox" /></div>
 	<div style="margin-top:10px">自依赖
 			  		<select id="runOnceIsSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60">
 			  			<option>否</option>

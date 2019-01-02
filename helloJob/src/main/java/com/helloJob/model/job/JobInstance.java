@@ -24,9 +24,9 @@ public class JobInstance implements Serializable {
 	private String id;
 	@TableField(value="job_id")
 	private Long jobId;
-	private Integer dt;
+	private Long dt;
 	private String createTime;
-	public void setId(Long jobId, Integer dt) {
+	public void setId(Long jobId, Long dt) {
 		this.id = jobId+"_"+dt;
 	}
 	

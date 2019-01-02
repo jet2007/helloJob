@@ -13,16 +13,16 @@ public interface JobInstanceService {
 	/**
 	 * 获取上级作业自依赖失败的作业列表
 	 * */
-	public List<Long> getRelyJobFailInstance (Long jobId,Integer dt);
+	public List<Long> getRelyJobFailInstance (Long jobId,Long dt);
 	
-	public void add(Long jobId,Integer dt);
+	public void add(Long jobId,Long dt);
 	
 	/**
 	 * 判断该作业是否满足自依赖的条件
 	 * ***/
-	boolean isSelfRely(Long jobId,Integer dt);
+	boolean isSelfRely(Long jobId,Long dt);
 
-	void delete(Long jobId, Integer dt);
+	void delete(Long jobId, Long dt);
 	
-	void delete(Set<Long> jobIds, Integer dt);
+	void delete(Set<Long> jobIds, Long dt);
 }

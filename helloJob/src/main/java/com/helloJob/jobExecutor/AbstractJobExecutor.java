@@ -24,7 +24,7 @@ import com.helloJob.vto.JobExecResult;
 public abstract class AbstractJobExecutor implements Runnable {
 	protected static final Logger log = LoggerFactory.getLogger(AbstractJobExecutor.class.getName());
 	private JobBasicInfo job;
-	protected Integer dt;
+	protected Long dt;
 	private JobBasicInfoService jobService;
 	private JobInstanceService jobInstanceService;
 	private ScheBasicInfo scheInfo;
@@ -32,7 +32,7 @@ public abstract class AbstractJobExecutor implements Runnable {
 	private ScheBasicInfoService scheBasicInfoService;
 	private JobOwnerService jobOwnerService;
 	private ApplicationContext context;
-	public AbstractJobExecutor(JobBasicInfo job,ScheBasicInfo scheInfo, Integer dt) {
+	public AbstractJobExecutor(JobBasicInfo job,ScheBasicInfo scheInfo, Long dt) {
 		this.job = job;
 		this.dt = dt;
 		this.context = ApplicationContextUtil.getContext();
@@ -98,7 +98,7 @@ public abstract class AbstractJobExecutor implements Runnable {
 			throw new RuntimeException(result.getLog());
 		}
 	}
-	private void sendWarnEmail(JobBasicInfo job,Integer dt,String ex) {
+	private void sendWarnEmail(JobBasicInfo job,Long dt,String ex) {
 		//String receiver = scheInfo.getReceiver();
 		List<String> owners = jobOwnerService.getOwnerEmailByJobId(job.getId());
 		if(owners.size() ==0) {

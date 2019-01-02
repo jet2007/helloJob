@@ -73,6 +73,7 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
 
   - 作业类型增加一个命令列；实现自定义操作不同类型的作业，包括一个参数(%s,用String.format方法实现)；
   - 如示例2，则在job定义内容中，只需要填写业务sql逻辑即可
+  - 换行符：在页面上有bug ,请使用“;”或直接修改数据库
 
   > 示例内容1： echo "shell 00001---"; %s
   >
@@ -96,6 +97,13 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
   - easyui-datebox----JSP
 - JAVA
   - dt (int-->long)
+    - model.job: JobInstance,JobLog
+    - service.job:JobInstanceService,JobLogService,ScheBasicInfoService及实现类
+    - controller.job：JobLogController
+    - 等等
+- 表结构
+  - job_instance.dt (int-->bigint)
+  - job_log.dt (int-->bigint)
 
 
 

@@ -102,10 +102,10 @@ public class ScheduleController extends BaseController {
 	 * ***/
 	@RequestMapping("/runOnce")
 	@ResponseBody
-	public Object runOnce(@RequestParam long jobId,@RequestParam Integer dt,@RequestParam(defaultValue="否") String isSelfRely){
+	public Object runOnce(@RequestParam long jobId,@RequestParam Long dt,@RequestParam(defaultValue="否") String isSelfRely){
 		try {
 			if(StringUtils.isEmpty(dt)) {
-				dt = DateUtils.getYesterday();
+				dt =  DateUtils.getYesterday() ;
 			}
 			if("是".equals(isSelfRely)) {
 				//判断自依赖是否ok

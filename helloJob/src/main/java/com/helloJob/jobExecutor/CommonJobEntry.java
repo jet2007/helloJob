@@ -20,7 +20,7 @@ import com.helloJob.utils.job.JobThreadPool;
 
 public class CommonJobEntry {
 	public static final Logger log = LoggerFactory.getLogger(CommonJobEntry.class.getName());
-	public static void execute(JobBasicInfo job,ScheBasicInfo scheInfo,Integer dt) {
+	public static void execute(JobBasicInfo job,ScheBasicInfo scheInfo,Long dt) {
 			log.info("作业被调起："+JSON.toJSONString(job));
 			Integer beginTime = scheInfo.getBeginTime();
 			Integer endTime = scheInfo.getEndTime();

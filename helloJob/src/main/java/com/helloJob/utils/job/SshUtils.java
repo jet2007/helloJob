@@ -28,7 +28,7 @@ import cn.hutool.core.util.StrUtil;
 public class SshUtils {
 	protected static Logger logger = LogManager.getLogger(SshUtils.class);
 
-	public static JobExecResult execute(JobBasicInfo job, Integer dt) {
+	public static JobExecResult execute(JobBasicInfo job, Long dt) {
 		JobLogService jobLogService = ApplicationContextUtil.getContext().getBean(JobLogService.class);
 		HostInfoService hostInfoService = ApplicationContextUtil.getContext().getBean(HostInfoService.class);
 		JobTypeService jobTypeService = ApplicationContextUtil.getContext().getBean(JobTypeService.class);

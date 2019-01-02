@@ -111,7 +111,7 @@ public class JobLogController extends BaseController{
 	 * **/
 	@RequestMapping("/getJobState")
 	@ResponseBody
-	Object getJobState(@RequestParam Long jobId,@RequestParam Integer dt) {
+	Object getJobState(@RequestParam Long jobId,@RequestParam Long dt) {
 		String jobState =  jobLogService.getJobState(jobId, dt);
 		if(jobState != null) {
 			return renderSuccess(jobState);
