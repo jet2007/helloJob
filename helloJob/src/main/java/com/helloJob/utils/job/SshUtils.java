@@ -8,6 +8,7 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.helloJob.commons.utils.StringUtils;
 import com.helloJob.model.job.HostInfo;
 import com.helloJob.model.job.JobBasicInfo;
 import com.helloJob.model.job.JobLog;
@@ -46,10 +47,17 @@ public class SshUtils {
 			JSch jsch = new JSch(); // 创建JSch对象
 			// String cmd = "hive -e \"select id,count(1) from stu group by id\"";// 要运行的命令
 			//String cmd = StrUtil.replaceChars(job.getCommand(), "\r\n", "");
-			String cmd = job.getCommand();
-			logger.info("执行命令:[" + cmd+"]");
+			String jobCmd = job.getCommand();
+			String jobTypeCmd=jobType.getCmd();
+			String cmd;
+			if(StringUtils.isNotBlank(jobTypeCmd) && jobTypeCmd.contains("%s")){
+				cmd=String.format(jobTypeCmd,jobCmd);
+			}
+			else{
+				cmd=jobCmd;
+			}
 			
-			logger.info(String.format("jobtype-cmd=[%s]\ncmd-detail=[%s]",jobType.getCmd(),cmd));
+			logger.info(String.format("执行命令:jobtype=[%s]\ncmd-detail=[%s]",jobType.getName(),cmd));
 			
 			Session session = jsch.getSession(userName, host, port);
 			// 根据用户名，主机ip，端口获取一个Session对象
