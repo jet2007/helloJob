@@ -67,13 +67,22 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
 
 
 
-#### 作业类型的自定义开发
+#### 作业类型的自定义开发(未完成！)
 
 * JobTypeController.java
 * JobType.java
 * JobTypeService及impl.java
 * jobType.jsp
 * jobType.js
+
+
+
+#### 触发时间改成yyyymmddhhmmss
+
+- 网页
+  - easyui-datebox----JSP
+- JAVA
+  - dt (int-->long)
 
 
 
