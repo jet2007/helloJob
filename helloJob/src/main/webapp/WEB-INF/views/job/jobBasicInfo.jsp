@@ -181,7 +181,6 @@ table.pgTable td.tdTitle{
 					<div>每周五6点执行： 0 0 6 ? * FRI</div>
 					<div>每月的第一天6点执行： 0 0 6 1 * ?</div>
 					<div>每30s执行一次：0/30 * * * * ?</div>
-					<div>每30s执行一次：0/30 * * * * ?</div>
 					<div>周期：YYYYMMDDHHMISS,YYYYMMDDHHMI,YYYYMMDDHH,YYYYMMDD,YYYYMM,YYYY</div>
 				</div>
 			</span>

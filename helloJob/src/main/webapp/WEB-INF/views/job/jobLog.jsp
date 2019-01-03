@@ -13,7 +13,7 @@
  <div data-options="region:'north',border:false" style=";height: 40px; line-height:40px;overflow: hidden;background-color: #fff">
 	<div  id="jobLogForm">
 		<span>作业id<input name="jobId"  class="easyui-numberbox"></span>
-	&nbsp;&nbsp;&nbsp;<span>dt<input name="dt"  type="text" class="easyui-datetimebox" ></span>
+	&nbsp;&nbsp;&nbsp;<span>运行日期<input name="dt"  type="text" class="easyui-datetimebox" ></span>
 		&nbsp;<span>作业状态
 			<select class="easyui-combobox" name="jobState" style="width:80px" panelHeight="auto">
 				<option value="">全部</option>
@@ -48,7 +48,7 @@
 </div>
 <div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:300px;height:250px;padding:10px"
 	 data-options="closed:'true' ">
-	<div>选择dt<input id="runOnceDt"  class="easyui-datetimebox" /></div>
+	<div>选择运行日期<input id="runOnceDt"  class="easyui-datetimebox" /></div>
 	<div style="margin-top:10px">自依赖
 			  		<select id="runOnceIsSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60">
 			  			<option>否</option>

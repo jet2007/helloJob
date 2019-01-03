@@ -78,8 +78,8 @@ var jobLogMvc = {
 											sortable : true
 										}, {
 											field : 'dt',
-											title : 'dt',
-											width : 70,
+											title : '运行日期',
+											width : 130,
 											sortable : true
 										} ] ],
 								onLoadSuccess : function(data) {
