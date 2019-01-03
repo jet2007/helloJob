@@ -63,8 +63,8 @@ var easyuiUtils = {
 		$("#"+domId+" .easyui-datetimebox").each(function(index,dom){
 			if($(this).next().is(":visible")){
 				var name = $(this).attr("textboxname"); 
-				var options = $(this).datebox("options");
-				param[name] =  $(this).datebox("getValue");
+				var options = $(this).datetimebox("options");
+				param[name] =  $(this).datetimebox("getValue");
 				easyuiUtils.validateParam(param,name,options);
 			}
 		});

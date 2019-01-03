@@ -18,6 +18,7 @@
 <script type="text/javascript" src="${staticPath }/static/js/arrayToTree.js"></script>
 <script type="text/javascript" src="${staticPath }/static/js/extJs.js"></script>
 <script type="text/javascript" src="${staticPath }/static/commonJs/easyUtils.js" charset="utf-8"></script>
+<script type="text/javascript" src="${staticPath }/static/commonJs/dateformat.js"></script>
 <script type="text/javascript" src="${path}/static/commonJs/comboboxUtils.js"></script>
 <script type="text/javascript" src="${path}/static/commonJs/easyuiUtils.js"></script>
 <script type="text/javascript" src="${path}/static/commonJs/easyuiExtend.js"></script>
@@ -45,5 +46,19 @@
 		var m =  parseInt(s.substring(4,6));
 		var d =  parseInt(s.substring(6,8));
 		return new Date(y,m-1,d);
+    }
+    $.fn.datetimebox.defaults.formatter = function(date){
+    	return DateFormat.format(date, 'yyyyMMddhhmmss');
+    }
+    $.fn.datetimebox.defaults.parser = function(s){
+    	if (!s) return new Date();		
+		var yy = s.substring(0,4);
+		var MM = s.substring(4,6);
+		var dd = s.substring(6,8);
+		var hh = s.substring(8,10);
+		var mm = s.substring(10,12);
+		var ss = s.substring(12,14);
+		var dt = yy+"-"+MM+"-"+dd+" "+hh+":"+mm+":"+ss;
+		return DateFormat.formatToDate(dt);;
     }
 </script>
