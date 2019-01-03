@@ -40,7 +40,7 @@ public class ScheBasicInfoServiceImpl  extends ServiceImpl< ScheBasicInfoMapper,
 		QuartzManager.addJob(jobId+"", cron);
 	}
 	@Override
-	public void runOnce(long jobId, Long dt, String isSelfRely) {
+	public void runOnce(long jobId, String dt, String isSelfRely) {
 		JobBasicInfo job = JobBasicInfoService.get( jobId);
 		ScheBasicInfo scheInfo =new ScheBasicInfo();
 		scheInfo.setIsSelfRely(isSelfRely);
@@ -75,7 +75,7 @@ public class ScheBasicInfoServiceImpl  extends ServiceImpl< ScheBasicInfoMapper,
 		return scheBasicInfoMapper.selectList(wrapper);
 	}
 	@Override
-	public void killJobs(Set<Long> jobIds, Long dt,String firstLineLog) {
+	public void killJobs(Set<Long> jobIds, String dt,String firstLineLog) {
 		List<String> jobLogIds = jobLogService.getRunningJobLogIds(jobIds, dt);
 		for(String jobLogId : jobLogIds) {
 			RunningJobInfo runningJobInfo = RunningJobUtils.get(jobLogId);

@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.helloJob.constant.SchedulerPeriodConst;
+
 public class DateUtils {
 	public static String getFormatDate(Date date , String formatStr){
 		SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
@@ -32,17 +34,69 @@ public class DateUtils {
 		String date = getFormatDate("dd");
 		return Integer.parseInt(date);
 	}*/
-	/**
-	 * 获取昨天日期，返回格式yyyyMMdd
-	 * **/
 	
-	public static Long getYesterday(){
+	
+	public static Long getYesterday2(){
 		Date yesterday = addDay(new Date() , -1);
-		int a= Integer.parseInt(getFormatDate(yesterday, "yyyyMMdd"));
-		return Long.valueOf(a) *1000000; //原来是返回int
+		return Long.valueOf(getFormatDate(yesterday, "yyyyMMddHHmmss"));
+		//原来是返回int
+	}
+	
+	/**
+	 * 获取当前日期，返回格式yyyyMMdd000000
+	 * **/	
+	public static String getNowFormatStr000000(){
+		return getNowFormatStr("YYYYMMDD");
+	}
+	
+	/**
+	 * 获取当前日期，返回格式20180511234559
+	 * **/	
+	public static String getNowFormatStr(){
+		return getNowFormatStr("YYYYMMDDHHMISS");
+	}
+	
+	/**
+	 * format: yyyymmddhhmiss,yyyymmddhhmi,yyyymmddhh,yyyymmdd,yyyymm,yyyy
+	 *         20180511234559,20180511234500,201805112300,20180511000000,20180501000000,20180101000000
+	 * **/
+	public static String getNowFormatStr(String format){
+		return getDateFormatStr(new Date(), format);
 	}
 	
 	
+	/**
+	 * format: yyyymmddhhmiss,yyyymmddhhmi,yyyymmddhh,yyyymmdd,yyyymm,yyyy
+	 *         20180511234559,20180511234500,201805112300,20180511000000,20180501000000,20180101000000
+	 * **/
+	public static String getDateFormatStr(Date date,String format){
+		String mat = format.toUpperCase();
+		String re;
+		if(mat.equals(SchedulerPeriodConst.YYYYMMDD)){
+			re=getFormatDate(date, "yyyyMMdd")+"000000";
+		}else if (mat.equals(SchedulerPeriodConst.YYYYMMDDHHMISS)){
+			re=getFormatDate(date, "yyyyMMddHHmmss");
+		}else if (mat.equals(SchedulerPeriodConst.YYYYMMDDHHMI)){
+			re=getFormatDate(date, "yyyyMMddHHmm")+"00";
+		}else if (mat.equals(SchedulerPeriodConst.YYYYMMDDHH)){
+			re=getFormatDate(date, "yyyyMMddHH")+"0000";
+		}else if (mat.equals(SchedulerPeriodConst.YYYYMM)){
+			re=getFormatDate(date, "yyyyMM")+"01000000";
+		}else if (mat.equals(SchedulerPeriodConst.YYYY)){
+			re=getFormatDate(date, "yyyy")+"0101000000";
+		}else {
+			re=getFormatDate(date, "yyyyMMddHHmmss");
+		}
+		return re;
+	}
+	
+	
+	
+	public static Long getYesterdayLong(){
+		Date yesterday = addDay(new Date() , -1);
+		return Long.valueOf(getFormatDate(yesterday, "yyyyMMddHHmmss"));
+		//原来是返回int
+	}
 	
 	public static String getYesterday(String format){
 		Date yesterday = addDay(new Date() , -1);

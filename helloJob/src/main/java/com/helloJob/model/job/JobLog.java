@@ -23,7 +23,7 @@ public class JobLog implements Serializable{
 	private Long jobId;
 	private String applicationId;
 	private String jobState;
-	private Long dt;
+	private String dt;
 	private String beginTime;
 	private String endTime;
 	private String log;

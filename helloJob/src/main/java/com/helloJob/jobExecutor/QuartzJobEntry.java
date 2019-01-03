@@ -19,6 +19,6 @@ public class QuartzJobEntry implements org.quartz.Job{
 		JobBasicInfoService jobService = ApplicationContextUtil.getContext().getBean(JobBasicInfoService.class);
 		ScheBasicInfoService scheBasicInfoService  = ApplicationContextUtil.getContext().getBean(ScheBasicInfoService.class);
 		JobBasicInfo job = jobService.get(jobId);
-		CommonJobEntry.execute(job,scheBasicInfoService.getScheInfo(jobId),DateUtils.getYesterday());
+		CommonJobEntry.execute(job,scheBasicInfoService.getScheInfo(jobId),DateUtils.getNowFormatStr000000());
 	}
 }	

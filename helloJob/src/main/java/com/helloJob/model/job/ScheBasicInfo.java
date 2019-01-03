@@ -27,4 +27,6 @@ public class ScheBasicInfo implements Serializable{
 	/*private String receiver;//收件人
 */	private String createTime;
 	
+	private String period;
+	
 }

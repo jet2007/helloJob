@@ -28,12 +28,12 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 	}
 
 	@Override
-	public List<Long> getRelyJobFailInstance(Long jobId, Long dt) {
+	public List<Long> getRelyJobFailInstance(Long jobId, String dt) {
 		return jobInstanceMapper.getRelyJobFailInstance(jobId,dt);
 	}
 
 	@Override
-	public void add(Long jobId, Long dt) {
+	public void add(Long jobId, String dt) {
 		JobInstance bean = new JobInstance();
 		bean.setCreateTime(DateUtils.getCreateTime());
 		bean.setJobId(jobId);
@@ -45,17 +45,17 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 
 
 	@Override
-	public void delete(Long jobId, Long dt) {
+	public void delete(Long jobId, String dt) {
 		jobInstanceMapper.deleteById(jobId+"_"+dt);
 	}
 
-	public boolean beforeDtHasSuccess(Long jobId,Long dt) {
+	public boolean beforeDtHasSuccess(Long jobId,String dt) {
 		Wrapper<JobInstance> wrapper = new EntityWrapper<>();
 		wrapper.where("job_id={0} and dt >= {1}", jobId,dt);
 		int count = jobInstanceMapper.selectCount(wrapper );
 		return count == 0;
 	}
-	public boolean preDtIsSuccess(Long jobId, Long dt) {
+	public boolean preDtIsSuccess(Long jobId, String dt) {
 		Date berforDtDate = DateUtils.addDay(DateUtils.parse(dt+"", "yyyyMMdd"), -1);
 		String beforDt =DateUtils.getFormatDate(berforDtDate, "yyyyMMdd");
 		Wrapper<JobInstance> wrapper = new EntityWrapper<>();
@@ -64,7 +64,7 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 		return count == 1;
 	}
 	@Override
-	public boolean isSelfRely(Long jobId, Long dt) {
+	public boolean isSelfRely(Long jobId, String dt) {
 		if(preDtIsSuccess(jobId, dt)) {
 			return true;
 		}
@@ -75,7 +75,7 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 	}
 
 	@Override
-	public void delete(Set<Long> jobIds, Long dt) {
+	public void delete(Set<Long> jobIds, String dt) {
 		if(CollectionUtils.isNotEmpty(jobIds)) {
 			jobInstanceMapper.delete(jobIds,dt);
 		}

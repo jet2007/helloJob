@@ -8,7 +8,7 @@ import com.helloJob.utils.job.SshUtils;
 import com.helloJob.vto.JobExecResult;
 
 public class ShellJobExecutor extends AbstractJobExecutor{
-	public ShellJobExecutor(JobBasicInfo job,ScheBasicInfo scheInfo,Long dt) {
+	public ShellJobExecutor(JobBasicInfo job,ScheBasicInfo scheInfo,String dt) {
 		super(job, scheInfo,dt);
 	}
 	@Override

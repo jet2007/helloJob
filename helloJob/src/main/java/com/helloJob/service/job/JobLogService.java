@@ -10,7 +10,7 @@ import com.helloJob.model.job.JobLog;
 public interface JobLogService {
 	public void add(JobLog jobLog);
 	
-	public JobLog addRunningLog(long jobId,Long dt,JobBasicInfo job);
+	public JobLog addRunningLog(long jobId,String dt,JobBasicInfo job);
 	
 	public JobLog get(String id);
 
@@ -22,7 +22,7 @@ public interface JobLogService {
 
 	public void updateSuccess(JobLog jobLog);
 
-	public void add(Long jobId, Long dt, String state, String log);
+	public void add(Long jobId, String dt, String state, String log);
 
 	public void grid(PageInfo pageInfo);
 	
@@ -34,9 +34,9 @@ public interface JobLogService {
 	/***
 	 * 获取日志状态为"执行中"的日志id列表
 	 * **/
-	List<String> getRunningJobLogIds(Set<Long> jobIds, Long dt);
+	List<String> getRunningJobLogIds(Set<Long> jobIds, String dt);
 	/**
 	 * 获取最新一条日志的状态
 	 * **/
-	String getJobState(Long jobId,Long dt);
+	String getJobState(Long jobId,String dt);
 }

@@ -47,7 +47,7 @@ public class JobLogServiceImpl extends ServiceImpl<JobLogMapper,  JobLog> implem
 	}
 
 	@Override
-	public JobLog addRunningLog(long jobId, Long dt,JobBasicInfo job) {
+	public JobLog addRunningLog(long jobId, String dt,JobBasicInfo job) {
 		JobLog jobLog = new JobLog();
 		jobLog.setJobId(jobId);
 		jobLog.setDt(dt);
@@ -76,7 +76,7 @@ public class JobLogServiceImpl extends ServiceImpl<JobLogMapper,  JobLog> implem
 	}
 
 	@Override
-	public void add(Long jobId, Long dt, String state, String log) {
+	public void add(Long jobId, String dt, String state, String log) {
 		JobLog jobLog = new JobLog();
 		jobLog.setJobId(jobId);
 		jobLog.setDt(dt);
@@ -122,7 +122,7 @@ public class JobLogServiceImpl extends ServiceImpl<JobLogMapper,  JobLog> implem
 	}
 
 	@Override
-	public List<String> getRunningJobLogIds(Set<Long> jobIds, Long dt) {
+	public List<String> getRunningJobLogIds(Set<Long> jobIds, String dt) {
 		if(CollectionUtils.isEmpty(jobIds)) {
 			return Lists.newArrayList();
 		}
@@ -130,7 +130,7 @@ public class JobLogServiceImpl extends ServiceImpl<JobLogMapper,  JobLog> implem
 	}
 
 	@Override
-	public String getJobState(Long jobId, Long dt) {
+	public String getJobState(Long jobId, String dt) {
 		return jobLogMapper.getJobState(jobId,dt);
 	}
 

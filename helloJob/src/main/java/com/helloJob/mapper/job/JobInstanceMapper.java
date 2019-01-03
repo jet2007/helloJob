@@ -10,8 +10,8 @@ import com.helloJob.model.job.JobInstance;
 
 public interface JobInstanceMapper extends BaseMapper<JobInstance> {
 
-	List<Long> getRelyJobFailInstance(@Param("jobId") Long jobId,@Param("dt") Long dt);
+	List<Long> getRelyJobFailInstance(@Param("jobId") Long jobId,@Param("dt") String dt);
 
-	void delete(@Param("jobIds") Set<Long> jobIds,@Param("dt")  Long dt);
+	void delete(@Param("jobIds") Set<Long> jobIds,@Param("dt")  String dt);
 
 }

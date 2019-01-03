@@ -37,7 +37,7 @@ public class JobLogController extends BaseController{
 	@RequestMapping("/grid")
 	public Object grid(Integer page, Integer rows, 
             @RequestParam(value = "sort", defaultValue = "create_time") String sort, 
-            @RequestParam(value = "order", defaultValue = "DESC") String order,Long jobId,Long dt,String jobState){
+            @RequestParam(value = "order", defaultValue = "DESC") String order,Long jobId,String dt,String jobState){
 		if("".equals(jobState)) jobState =null;
 		PageInfo pageInfo = new PageInfo(page, rows, sort, order);
 		Map<String,Object> condition = Maps.newHashMap();
@@ -111,7 +111,7 @@ public class JobLogController extends BaseController{
 	 * **/
 	@RequestMapping("/getJobState")
 	@ResponseBody
-	Object getJobState(@RequestParam Long jobId,@RequestParam Long dt) {
+	Object getJobState(@RequestParam Long jobId,@RequestParam String dt) {
 		String jobState =  jobLogService.getJobState(jobId, dt);
 		if(jobState != null) {
 			return renderSuccess(jobState);

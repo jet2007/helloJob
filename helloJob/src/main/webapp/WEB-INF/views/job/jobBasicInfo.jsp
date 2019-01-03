@@ -175,11 +175,14 @@ table.pgTable td.tdTitle{
 		<span>
 			<span id="timeSche" style="display:none">
 				<input class="easyui-textbox" name="cron"  prompt="请输入cron表达式" style="width:150px" required>
+				,周期：<input class="easyui-textbox" name="period"  prompt="YYYYMMDD" style="width:150px" required>
 				<div style="color:grey" >
 					<div>每天6点执行：0 0 6 * * ?</div>
 					<div>每周五6点执行： 0 0 6 ? * FRI</div>
 					<div>每月的第一天6点执行： 0 0 6 1 * ?</div>
 					<div>每30s执行一次：0/30 * * * * ?</div>
+					<div>每30s执行一次：0/30 * * * * ?</div>
+					<div>周期：YYYYMMDDHHMISS,YYYYMMDDHHMI,YYYYMMDDHH,YYYYMMDD,YYYYMM,YYYY</div>
 				</div>
 			</span>
 			<span id="relyPreJob" >
