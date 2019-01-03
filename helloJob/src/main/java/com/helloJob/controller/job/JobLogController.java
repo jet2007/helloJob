@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 import com.helloJob.commons.base.BaseController;
 import com.helloJob.commons.result.PageInfo;
 import com.helloJob.commons.result.Result;
+import com.helloJob.commons.utils.StringUtils;
 import com.helloJob.constant.JobStateConst;
 import com.helloJob.model.job.JobLog;
 import com.helloJob.service.job.JobInstanceService;
@@ -41,9 +42,12 @@ public class JobLogController extends BaseController{
 		if("".equals(jobState)) jobState =null;
 		PageInfo pageInfo = new PageInfo(page, rows, sort, order);
 		Map<String,Object> condition = Maps.newHashMap();
+		
 		condition.put("jobId", jobId);
-		condition.put("dt", dt);
-		condition.put("jobState", jobState);
+		if(StringUtils.isNotBlank(dt))
+			condition.put("dt", dt);
+		if(StringUtils.isNotBlank(jobState))
+			condition.put("jobState", jobState);
 		pageInfo.setCondition(condition);
 		jobLogService.grid(pageInfo);
 		return pageInfo;

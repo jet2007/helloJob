@@ -9,7 +9,7 @@ where 1=1
     	and job_id =#{jobId}
      ]]></if>
      <if test=" dt != null "> <![CDATA[  
-    	and dt =#{dt}
+    	and dt like concat('%',#{dt},'%')
      ]]></if>
       <if test=" jobState != null and jobSate !='' "> <![CDATA[  
     	and job_state =#{jobState}
