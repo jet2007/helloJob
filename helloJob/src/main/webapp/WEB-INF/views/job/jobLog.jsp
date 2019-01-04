@@ -30,7 +30,7 @@
 <div id="tb">
 	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeLog()">查看日志</a>
  	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.runOnce()">手工执行</a>
- 		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.setSuccess()">设为成功</a>
+ 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.setSuccess()">设为成功</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeJobTree()">作业树</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-no" plain="true" onclick="jobLogMvc.Controller.killJob()">停止运行</a>
 </div>
@@ -48,7 +48,7 @@
 </div>
 <div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:300px;height:250px;padding:10px"
 	 data-options="closed:'true' ">
-	<div>选择运行日期<input id="runOnceDt"  class="easyui-datetimebox" /></div>
+	<div>运行日期<input id="runOnceDt"  class="easyui-datetimebox" data-options="editable:false"  /></div>
 	<div style="margin-top:10px">自依赖
 			  		<select id="runOnceIsSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60">
 			  			<option>否</option>

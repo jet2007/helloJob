@@ -5,6 +5,8 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helloJob.commons.utils.StringUtils;
+import com.helloJob.constant.SchedulerPeriodConst;
 import com.helloJob.model.job.JobBasicInfo;
 import com.helloJob.service.job.JobBasicInfoService;
 import com.helloJob.service.job.ScheBasicInfoService;
@@ -19,6 +21,12 @@ public class QuartzJobEntry implements org.quartz.Job{
 		JobBasicInfoService jobService = ApplicationContextUtil.getContext().getBean(JobBasicInfoService.class);
 		ScheBasicInfoService scheBasicInfoService  = ApplicationContextUtil.getContext().getBean(ScheBasicInfoService.class);
 		JobBasicInfo job = jobService.get(jobId);
-		CommonJobEntry.execute(job,scheBasicInfoService.getScheInfo(jobId),DateUtils.getNowFormatStr000000());
+		
+		String period = scheBasicInfoService.getScheInfo(jobId).getPeriod();
+		if(StringUtils.isBlank(period)) {
+			period=SchedulerPeriodConst.YYYYMMDDHHMISS;
+		}
+		String execDate = DateUtils.getNowFormatStr(period);
+		CommonJobEntry.execute(job,scheBasicInfoService.getScheInfo(jobId),execDate);
 	}
 }	
