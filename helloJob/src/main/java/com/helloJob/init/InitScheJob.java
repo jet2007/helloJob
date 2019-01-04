@@ -32,6 +32,7 @@ public class InitScheJob implements ApplicationListener<ContextRefreshedEvent> {
 			ApplicationContextUtil.setContext(event.getApplicationContext());
 			List<ScheBasicInfo> list = scheBasicInfoService.getScheByTime();
 			QuartzManager.Init(event.getApplicationContext());
+			log.info("#############list="+list.size()+",##############");
 			if(list.size()>0){
 				for(ScheBasicInfo scheInfo : list){
 					log.info("#############ScheBasicInfo##############");
