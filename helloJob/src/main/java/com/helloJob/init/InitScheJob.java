@@ -13,6 +13,7 @@ import com.helloJob.model.job.ScheBasicInfo;
 import com.helloJob.service.job.JobLogService;
 import com.helloJob.service.job.ScheBasicInfoService;
 import com.helloJob.utils.ApplicationContextUtil;
+import com.helloJob.utils.DateUtils;
 import com.helloJob.utils.job.QuartzManager;
 
 /**
@@ -30,19 +31,15 @@ public class InitScheJob implements ApplicationListener<ContextRefreshedEvent> {
 		if(event.getApplicationContext().getParent() == null){
 			log.info("spring 初始化执行");
 			ApplicationContextUtil.setContext(event.getApplicationContext());
-			
-			
-			
-			
 			List<ScheBasicInfo> list = scheBasicInfoService.getScheByTime();
 			QuartzManager.Init(event.getApplicationContext());
-			log.info("#############list="+list.size()+",##############");
 			if(list.size()>0){
 				for(ScheBasicInfo scheInfo : list){
-					log.info("#############ScheBasicInfo##############");
-					log.info(JSONObject.toJSONString(scheInfo));
-					QuartzManager.addJob(scheInfo.getJobId(), scheInfo.getCron());
-					log.info("#############ScheBasicInfo##############");
+					if(scheInfo.isAvailable()){
+						log.info("初始化启动调度作业信息="+JSONObject.toJSONString(scheInfo));
+						QuartzManager.addJob(scheInfo.getJobId(), scheInfo.getCron());
+					}
+
 				}
 			}
 			//将重启前，状态为正在运行的记录更新为失败

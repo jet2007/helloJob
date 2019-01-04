@@ -30,4 +30,6 @@ public interface ScheBasicInfoService {
 	 * 终止正在执行的作业
 	 * ***/
 	public void killJobs(Set<Long> jobIds, String dt,String firstLineLog);
+	
+
 }

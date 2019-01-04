@@ -22,9 +22,9 @@ public class CommonJobEntry {
 	public static final Logger log = LoggerFactory.getLogger(CommonJobEntry.class.getName());
 	public static void execute(JobBasicInfo job,ScheBasicInfo scheInfo,String dt) {
 			log.info("作业被调起："+JSON.toJSONString(job));
-			Integer beginTime = scheInfo.getBeginTime();
-			Integer endTime = scheInfo.getEndTime();
-			Integer toDay = DateUtils.getYyyyMMdd();
+			Long beginTime = scheInfo.getBeginTime() !=null ? Long.valueOf( scheInfo.getBeginTime()):-1L;
+			Long endTime =scheInfo.getEndTime()!=null? Long.valueOf(scheInfo.getEndTime()):99999999999999L;
+			Long toDay = Long.valueOf(DateUtils.getNowFormatStr());
 			ApplicationContext context = ApplicationContextUtil.getContext();
 			JobLogService jobLogService = context.getBean(JobLogService.class);
 			//判断是否在有效执行时间内
