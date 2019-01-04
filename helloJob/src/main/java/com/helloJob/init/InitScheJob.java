@@ -34,8 +34,10 @@ public class InitScheJob implements ApplicationListener<ContextRefreshedEvent> {
 			QuartzManager.Init(event.getApplicationContext());
 			if(list.size()>0){
 				for(ScheBasicInfo scheInfo : list){
+					log.info("#############ScheBasicInfo##############");
 					log.info(JSONObject.toJSONString(scheInfo));
 					QuartzManager.addJob(scheInfo.getJobId(), scheInfo.getCron());
+					log.info("#############ScheBasicInfo##############");
 				}
 			}
 			//将重启前，状态为正在运行的记录更新为失败

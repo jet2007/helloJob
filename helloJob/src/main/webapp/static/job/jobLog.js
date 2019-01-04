@@ -144,6 +144,7 @@ var jobLogMvc = {
 		},
 		runOnce : function() {
 			var row = jobLogMvc.Service.getSelectRow();
+			
 			$("#runOnceDt").datetimebox("setValue", row.dt );
 			$("#runOnceDlg").openDialog(
 					function() {
