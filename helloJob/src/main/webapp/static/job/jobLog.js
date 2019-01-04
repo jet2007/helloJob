@@ -144,12 +144,12 @@ var jobLogMvc = {
 		},
 		runOnce : function() {
 			var row = jobLogMvc.Service.getSelectRow();
-			$("#runOnceDt").datetimebox("setValue", row.dt + "");
+			$("#runOnceDt").textbox("setValue", row.dt + "");
 			$("#runOnceDlg").openDialog(
 					function() {
 						var param = {};
 						param.jobId = row.jobId;
-						param.dt = $("#runOnceDt").datetimebox("getValue");
+						param.dt = $("#runOnceDt").textbox("getValue");
 						param.isSelfRely = $("#runOnceIsSelfRely").combobox("getValue");
 						easyUtils.post(path + "/sche/runOnce.do", param,
 								function(obj) {

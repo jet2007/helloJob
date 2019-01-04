@@ -48,7 +48,7 @@
 </div>
 <div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:300px;height:250px;padding:10px"
 	 data-options="closed:'true' ">
-	<div>运行日期<input id="runOnceDt"  class="easyui-datetimebox" data-options="editable:false"  /></div>
+	<div>运行日期<input id="runOnceDt"  class="easyui-textbox"   /></div>
 	<div style="margin-top:10px">自依赖
 			  		<select id="runOnceIsSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60">
 			  			<option>否</option>
