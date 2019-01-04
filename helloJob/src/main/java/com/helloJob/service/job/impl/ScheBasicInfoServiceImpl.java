@@ -69,9 +69,11 @@ public class ScheBasicInfoServiceImpl  extends ServiceImpl< ScheBasicInfoMapper,
 	}
 	@Override
 	public List<ScheBasicInfo> getScheByTime() {
-		ScheBasicInfo scheBasicInfo = new ScheBasicInfo();
-		scheBasicInfo.setScheType(ScheTypeConst.TIME_SCHE);
-		Wrapper<ScheBasicInfo> wrapper = new EntityWrapper<>(scheBasicInfo);
+		Wrapper<ScheBasicInfo> wrapper = new EntityWrapper<>();
+		wrapper.where("sche_type = {0}", ScheTypeConst.TIME_SCHE);
+//		ScheBasicInfo scheBasicInfo = new ScheBasicInfo();
+//		scheBasicInfo.setScheType(ScheTypeConst.TIME_SCHE);
+//		Wrapper<ScheBasicInfo> wrapper = new EntityWrapper<>(scheBasicInfo);
 		return scheBasicInfoMapper.selectList(wrapper);
 	}
 	@Override

@@ -30,6 +30,10 @@ public class InitScheJob implements ApplicationListener<ContextRefreshedEvent> {
 		if(event.getApplicationContext().getParent() == null){
 			log.info("spring 初始化执行");
 			ApplicationContextUtil.setContext(event.getApplicationContext());
+			
+			
+			
+			
 			List<ScheBasicInfo> list = scheBasicInfoService.getScheByTime();
 			QuartzManager.Init(event.getApplicationContext());
 			log.info("#############list="+list.size()+",##############");
