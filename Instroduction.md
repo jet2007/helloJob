@@ -102,8 +102,43 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
     - controller.job：JobLogController
     - 等等
 - 表结构
-  - job_instance.dt (int-->bigint)
-  - job_log.dt (int-->bigint)
+  - job_instance.dt (int-->string)
+  - job_log.dt (int-->string)
+- 已完成
+
+
+
+#### 重启tomcat服务，原来的cron不起作用
+
+- ScheBasicInfoServiceImpl的getScheByTime方法等
+- 已完成
+
+
+
+
+
+
+
+#### 手动调度---1个作业与1组作业？？
+
+- ScheBasicInfoServiceImpl的getScheByTime方法等
+
+
+
+#### 作业组
+
+- ScheBasicInfoServiceImpl的getScheByTime方法等
+- 增加一个作业组概念
+- 简单实现：只在作业基本信息增加一列
+
+
+
+
+
+#### 主机---> 主机组
+
+- 表：host_group_info
+- 作业实例/作业日志+host
 
 
 

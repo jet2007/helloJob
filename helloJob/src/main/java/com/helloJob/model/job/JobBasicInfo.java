@@ -28,4 +28,5 @@ public class JobBasicInfo implements Serializable {
 	private String passwd;
 	private String ip;*/
 	private String createTime;
+	private String jobGroup;
 }

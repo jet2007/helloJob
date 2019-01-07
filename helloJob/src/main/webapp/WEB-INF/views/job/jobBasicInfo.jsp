@@ -54,6 +54,7 @@ table.pgTable td.tdTitle{
 	 <div data-options="region:'north',border:false" style=";height: 40px; line-height:40px;overflow: hidden;background-color: #fff">
 		<div id="jobForm">
 		&nbsp;&nbsp;编号<input class="easyui-numberbox" style="width:100px" name="jobId">
+		&nbsp;&nbsp;分组<input class="easyui-textbox" style="width:100px" name="jobGroup">
 		&nbsp;&nbsp;名称<input class="easyui-textbox" style="width:100px" name="jobName">
 		&nbsp;&nbsp;创建人<select class="easyui-combobox" name="creater" data-options="panelHeight:'auto',valueField:'id',textField:'text',url:' ${staticPath}/job/getHasJobUserList' "     style="width:120px"></select>
 		
@@ -80,6 +81,10 @@ table.pgTable td.tdTitle{
 <div id="addJob" title="添加作业"  closed="true" class="easyui-dialog" style="width:750px;height:‘auto''"  data-options="closed:'true' ">
 	<form class="">
 		 <ul>
+		 <li>
+			  	<div>作业分组&nbsp;  <input data-options="required:true" class="easyui-textbox" name="jobGroup" style="width:250px" ></div>
+			  </li>
+			  
 			  <li>
 			  	<div>作业名称&nbsp;  <input data-options="required:true" class="easyui-textbox" name="jobName" style="width:250px" ></div>
 			  </li>
@@ -217,6 +222,7 @@ table.pgTable td.tdTitle{
 			<thead>
 					<tr>
 					<th data-options="field:'id',width:50">编号</th>
+						<th data-options="field:'jobGroup',width:260">分组</th>
 						<th data-options="field:'jobName',width:260">名称</th>
 						<th data-options="field:'delete',width:90,formatter:function(value,row,index){return '<a class=easyui-linkbutton-del>删除</a>'}">操作</th>
 					</tr>
@@ -237,6 +243,7 @@ table.pgTable td.tdTitle{
 				<thead>
 					<tr>
 						<th data-options="field:'id',width:50">编号</th>
+						<th data-options="field:'jobGroup',width:260">分组</th>
 						<th data-options="field:'jobName',width:260">名称</th>	
 						<th data-options="field:'add',width:90,formatter:function(value,row,index){return '<a class=easyui-linkbutton-add>添加</a>'}"">操作</th>
 					</tr>
@@ -267,6 +274,7 @@ table.pgTable td.tdTitle{
 <script type="text/juicer" id="seeJobTpl">  
 	<ul>
 		<li>作业编号：{{job.id}}</li>
+		<li>作业分组：{{job.jobGroup}}</li>
 		<li>作业名称：{{job.jobName}}</li>
 		<li>业务类型：{{jobTypeName}}</li>
 		<li>部署信息 主机:{{hostInfo.host}}   账号:{{hostInfo.username}}  </li>
