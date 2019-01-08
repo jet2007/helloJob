@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.alibaba.fastjson.JSON;
+import com.helloJob.commons.utils.StringUtils;
 import com.helloJob.constant.JobStateConst;
 import com.helloJob.constant.ScheTypeConst;
 import com.helloJob.model.job.JobBasicInfo;
@@ -22,8 +23,8 @@ public class CommonJobEntry {
 	public static final Logger log = LoggerFactory.getLogger(CommonJobEntry.class.getName());
 	public static void execute(JobBasicInfo job,ScheBasicInfo scheInfo,String dt) {
 			log.info("作业被调起："+JSON.toJSONString(job));
-			Long beginTime = scheInfo.getBeginTime() !=null ? Long.valueOf( scheInfo.getBeginTime()):-1L;
-			Long endTime =scheInfo.getEndTime()!=null? Long.valueOf(scheInfo.getEndTime()):99999999999999L;
+			Long beginTime = StringUtils.isNotBlank(scheInfo.getBeginTime())  ? Long.valueOf( scheInfo.getBeginTime()):-1L;
+			Long endTime =StringUtils.isNotBlank(scheInfo.getEndTime()) ? Long.valueOf(scheInfo.getEndTime()):99999999999999L;
 			Long toDay = Long.valueOf(DateUtils.getNowFormatStr());
 			ApplicationContext context = ApplicationContextUtil.getContext();
 			JobLogService jobLogService = context.getBean(JobLogService.class);

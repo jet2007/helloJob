@@ -56,6 +56,10 @@ WHERE  1 = 1
       <if test=" creater != null  "> <![CDATA[  
     	and t1.creater = #{creater}
      ]]></if>
+     <if test=" jobGroup != null  "> <![CDATA[  
+    	and t1.jobGroup = CONCAT('%',#{jobGroup},'%' )
+     ]]></if>
+     
 
   
   

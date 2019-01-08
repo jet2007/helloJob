@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.helloJob.commons.utils.StringUtils;
 import com.helloJob.utils.DateUtils;
 
 import lombok.Data;
@@ -34,8 +35,8 @@ public class ScheBasicInfo implements Serializable{
 	 * 调度的作业是否是有效的
 	 */
 	public boolean isAvailable(){
-		Long beginTime = this.beginTime !=null ? Long.valueOf( this.beginTime):-1L;
-		Long endTime =this.endTime !=null? Long.valueOf(this.endTime):99999999999999L;
+		Long beginTime = StringUtils.isNotBlank(this.beginTime) ? Long.valueOf( this.beginTime):-1L;
+		Long endTime = StringUtils.isNotBlank(this.endTime) ? Long.valueOf(this.endTime):99999999999999L;
 		Long toDay = Long.valueOf(DateUtils.getNowFormatStr());
 		if(beginTime<=toDay && toDay<=endTime){
 			return true;
