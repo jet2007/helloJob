@@ -12,10 +12,10 @@
 <div class="easyui-layout" data-options="fit:true,border:false">
  <div data-options="region:'north',border:false" style=";height: 40px; line-height:40px;overflow: hidden;background-color: #fff">
 	<div  id="jobLogForm">
-		<span>作业编号<input name="jobId"  class="easyui-numberbox"></span>
-		&nbsp;&nbsp;&nbsp;<span>作业分组<input name="eval('('+jobImg + ')').jobGroup"  class="easyui-textbox"></span>
-		&nbsp;&nbsp;&nbsp;<span>作业名称<input name="eval('('+jobImg + ')').jobName"  class="easyui-textbox"></span>
-	&nbsp;&nbsp;&nbsp;<span>运行日期<input name="dt"  type="text" class="easyui-datetimebox" ></span>
+		<!--  <span>作业编号<input name="jobId"  class="easyui-numberbox"></span> -->
+		<span>作业分组<input name="jobGroup"  class="easyui-textbox"></span>
+		&nbsp;<span>作业名称<input name="jobName"  class="easyui-textbox"></span>
+	&nbsp;<span>运行日期<input name="dt"  type="text" class="easyui-datetimebox" ></span>
 		&nbsp;<span>作业状态
 			<select class="easyui-combobox" name="jobState" style="width:80px" panelHeight="auto">
 				<option value="">全部</option>
