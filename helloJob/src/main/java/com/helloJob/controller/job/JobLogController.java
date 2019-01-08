@@ -51,7 +51,7 @@ public class JobLogController extends BaseController{
 			condition.put("jobState", jobState);
 		if(StringUtils.isNotBlank(jobName))
 			condition.put("jobName", jobName);
-		if(StringUtils.isNotBlank(jobState))
+		if(StringUtils.isNotBlank(jobGroup))
 			condition.put("jobGroup", jobGroup);
 		pageInfo.setCondition(condition);
 		jobLogService.grid(pageInfo);
