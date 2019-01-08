@@ -60,9 +60,7 @@ WHERE  1 = 1
     	and t1.job_group = CONCAT('%',#{jobGroup},'%' )
      ]]></if>
      
-
-  
-  
+     
     </select>
     
     <select id="getPreJobList" resultType="com.helloJob.model.job.JobBasicInfo">
