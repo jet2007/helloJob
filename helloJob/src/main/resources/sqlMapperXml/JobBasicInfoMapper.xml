@@ -57,7 +57,7 @@ WHERE  1 = 1
     	and t1.creater = #{creater}
      ]]></if>
      <if test=" jobGroup != null  and jobGroup != '' "> <![CDATA[  
-    	and t1.job_group = CONCAT('%',#{jobGroup},'%' )
+    	and t1.job_group like CONCAT('%',#{jobGroup},'%' )
      ]]></if>
      
      
