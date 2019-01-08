@@ -33,6 +33,18 @@ var jobLogMvc = {
 											}
 										},
 										{
+											field : 'job_group',
+											title : '作业分组',
+											width : 200,
+											formatter : function(value, row,
+													index) {
+												if (row.jobImg)
+													return eval('('
+															+ row.jobImg + ')').jobGroup;
+												return row.name;
+											}
+										},
+										{
 											field : 'job_name',
 											title : '作业名称',
 											width : 200,
