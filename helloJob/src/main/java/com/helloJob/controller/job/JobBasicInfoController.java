@@ -94,7 +94,7 @@ public class JobBasicInfoController  extends BaseController{
 	public Object getJobInfoList(Integer page, Integer rows, 
             @RequestParam(value = "sort", defaultValue = "create_time") String sort, 
             @RequestParam(value = "order", defaultValue = "DESC") String order,
-            Long jobId,Long creater,Long jobType,String jobName){
+            Long jobId,Long creater,Long jobType,String jobName,String jobGroup){
 		PageInfo pageInfo = new PageInfo(page, rows, sort, order);
 		Map<String, Object> condition = Maps.newHashMap();
 		Long loginUserId = getShiroUser().getId();
@@ -102,6 +102,7 @@ public class JobBasicInfoController  extends BaseController{
 		condition.put("creater", creater);
 		condition.put("jobType", jobType);
 		condition.put("jobName", jobName);
+		condition.put("jobGroup", jobGroup);
 		condition.put("loginUserId", loginUserId);
 		pageInfo.setCondition(condition );
 		jobBasicInfoService.getJobInfoList(pageInfo);
