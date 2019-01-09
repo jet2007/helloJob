@@ -15,7 +15,13 @@
      FROM job_log a
 LEFT JOIN job_basic_info b
        ON a.job_id=b.id 
+LEFT JOIN (SELECT distinct job_id
+           FROM   `job_owner`
+           WHERE  user_id = #{loginUserId} ) t6
+  ON a.job_id = t6.job_id 
+       
 where 1=1
+       AND ( b.creater = #{loginUserId}  OR t6.job_id IS NOT NULL ) 
   <if test=" jobId != null "> <![CDATA[  
     	and a.job_id =#{jobId}
      ]]></if>
