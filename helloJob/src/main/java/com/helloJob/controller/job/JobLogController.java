@@ -44,6 +44,9 @@ public class JobLogController extends BaseController{
 		PageInfo pageInfo = new PageInfo(page, rows, sort, order);
 		Map<String,Object> condition = Maps.newHashMap();
 		
+		Long loginUserId = getShiroUser().getId();
+		condition.put("loginUserId", loginUserId);
+		
 		condition.put("jobId", jobId);
 		if(StringUtils.isNotBlank(dt))
 			condition.put("dt", dt);
