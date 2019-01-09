@@ -199,10 +199,10 @@ function queryJobDg(param){
             {field:'jobType',title:'业务类型',width:80,rowspan:2},
             {field:'jobGroup',title:'分组',width:200,rowspan:2},
             {field:'jobName',title:'名称',width:200,rowspan:2},
-            {field:'host',title:'主机',width:110,rowspan:2},
-            {field:'command',title:'命令',width:200,rowspan:2},
-            {field:'scheManager',title:'调度',align:'center',colspan:5},
             {field:'creater',title:'创建人',width:70,rowspan:2},
+            {field:'host',title:'主机',width:110,rowspan:2},
+            {field:'scheManager',title:'调度',align:'center',colspan:5},
+            {field:'command',title:'命令',width:200,rowspan:2},
          /*   {field:'owner',title:'责任人',width:140,rowspan:2},*/
             {field:'createTime',title:'创建时间',width:120,rowspan:2,formatter : function(value, row, index){
             	return value.substring(0,16);

@@ -20,7 +20,7 @@ SELECT t1.id,
        t4.pid,
        t4.try_count,
        t4.try_interval,
-       t5.host,
+       concat(t5.protocol,'(',t5.host,',',COALESCE(t5.username,''),')') AS host,
        t5.username       jobUser
 FROM   job_basic_info t1
        LEFT JOIN job_type t2
