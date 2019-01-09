@@ -56,6 +56,30 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
 
 
 
+##### 邮件服务器
+
+```shell
+yum -y install postfix
+yum -y install mailx
+
+vi /etc/postfix/main.cf
+
+修改以下参数,将xxx.com换成你的域名，如果参数前面有#注释，记得去掉
+myhostname = mail.hellojob.com
+mydomain = hellojob.com
+myorigin = $mydomain
+inet_interfaces = all
+inet_protocols = ipv4
+
+echo "content" | mail -s "title" goliked@prmail.top
+
+
+```
+
+
+
+
+
 ##### 错误处理
 
 - MYSQL 5.7-only_full_group_by,可能报错
@@ -130,6 +154,12 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
 - ScheBasicInfoServiceImpl的getScheByTime方法等
 - 增加一个作业组概念
 - 简单实现：只在作业基本信息增加一列
+
+
+
+#### 作业日志+权限过滤
+
+- 作业创建人+责任人
 
 
 
