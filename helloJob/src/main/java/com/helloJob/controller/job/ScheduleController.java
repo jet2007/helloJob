@@ -104,7 +104,7 @@ public class ScheduleController extends BaseController {
 	@ResponseBody
 	public Object runOnce(@RequestParam long jobId,@RequestParam String dt,@RequestParam(defaultValue="否") String isSelfRely,@RequestParam String runOnceWay){
 		
-		System.out.println("###########ScheduleController----------"+runOnceWay);
+		//System.out.println("###########ScheduleController----------"+runOnceWay);
 		
 		try {
 			if(StringUtils.isEmpty(dt)) {

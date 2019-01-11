@@ -252,14 +252,19 @@ table.pgTable td.tdTitle{
 		</div>
 	</div>
 </div>
-<div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:300px;height:250px;padding:10px"
+<div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:600px;height:250px;padding:10px"
 	 data-options="closed:'true' ">
 	<div>运行日期<input id="runOnceDt"  class="easyui-datetimebox" /></div>
-	<div style="margin-top:10px">自依赖
+	<div style="margin-top:10px">自依赖&nbsp;
 			  		<select id="runOnceIsSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60">
 			  			<option>否</option>
 			  			<option>是</option>
 			  		</select>
+		</div>
+		<div style="margin-top:10px">方式&nbsp;&nbsp;
+				  		<select id="runOnceWay" class="easyui-combobox" data-options="panelHeight:'auto',width:400">
+				  			<option value="1">启动本作业及后续依赖作业(强制kill后续依赖作业)</option>
+				  		</select>
 		</div>
 </div>
 <div id="jobTreeDlg" class="easyui-dialog" title="查看作业树" style="display:none;width:500px;height:600px;padding:10px"
