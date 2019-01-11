@@ -56,8 +56,8 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 		return count == 0;
 	}
 	public boolean preDtIsSuccess(Long jobId, String dt) {
-		Date berforDtDate = DateUtils.addDay(DateUtils.parse(dt+"", "yyyyMMdd"), -1);
-		String beforDt =DateUtils.getFormatDate(berforDtDate, "yyyyMMdd");
+		Date berforDtDate = DateUtils.addDay(DateUtils.parse(dt+"", "yyyyMMddHHmmss"), -1);
+		String beforDt =DateUtils.getFormatDate(berforDtDate, "yyyyMMddHHmmss");
 		Wrapper<JobInstance> wrapper = new EntityWrapper<>();
 		wrapper.where("id={0}", jobId+"_"+beforDt);
 		int count = jobInstanceMapper.selectCount(wrapper );
