@@ -22,7 +22,6 @@ public class ExecDateUtils {
 	 * @return
 	 */
 	public static String execDateVariablesReplace(String input,String execdate){
-		String re=null;
 		//${dt1},${dt2}
 		input=input.replace("${dt1}", "${sys.exec.dt1:day=-1}").replace("${dt2}", "${sys.exec.dt2:day=-1}");
         //${sys.exec.dt1-1}  转化成${sys.exec.dt1:day=-1}
@@ -44,9 +43,7 @@ public class ExecDateUtils {
             input=input.replace(m.group(0), valStr);
             m = pattern.matcher(input);
         }
-        
-        System.out.println("####"+input);
-		return re;
+		return input;
 	}
 	
 	/**
