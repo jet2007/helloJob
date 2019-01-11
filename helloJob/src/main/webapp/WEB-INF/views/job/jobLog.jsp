@@ -56,7 +56,13 @@
 			  			<option>否</option>
 			  			<option>是</option>
 			  		</select>
-		</div>
+	</div>
+	<div style="margin-top:100px">自依赖
+			  		<select id="runOnceWay" class="easyui-combobox" data-options="panelHeight:'auto',width:auto">
+			  			<option value="1">启动本作业及后续依赖作业(强制kill后续依赖作业)</option>
+			  		</select>
+	</div>
+	
 </div>
 </div>
 <script src="${path }/static/job/jobLog.js?_v=${_version}"></script>

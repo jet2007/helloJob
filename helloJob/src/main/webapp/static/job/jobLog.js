@@ -164,6 +164,7 @@ var jobLogMvc = {
 						param.jobId = row.jobId;
 						param.dt = $("#runOnceDt").datetimebox("getValue");
 						param.isSelfRely = $("#runOnceIsSelfRely").combobox("getValue");
+						param.runOnceWay = $("#runOnceWay").combobox("getValue");
 						easyUtils.post(path + "/sche/runOnce.do", param,
 								function(obj) {
 									jobLogDg.datagrid("reload");

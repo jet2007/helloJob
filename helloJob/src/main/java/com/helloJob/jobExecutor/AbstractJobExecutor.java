@@ -88,7 +88,7 @@ public abstract class AbstractJobExecutor implements Runnable {
 			JobInstanceService jobInstanceService= context.getBean(JobInstanceService.class);
 			jobInstanceService.add(job.getId(),dt);
 			log.info("作业"+job.getId()+"执行成功。。查看是否有下一级的作业依赖");
-			 List<ScheRelyJob> scheRelyJobList = scheRelyJobService.getTriggerJobList(job.getId());
+			List<ScheRelyJob> scheRelyJobList = scheRelyJobService.getTriggerJobList(job.getId());
 			log.info(job.getId()+"的下级作业有："+JSON.toJSONString(scheRelyJobList));
 			for (ScheRelyJob relyJob : scheRelyJobList) {
 				JobBasicInfo childJob = jobService.get(relyJob.getJobId());

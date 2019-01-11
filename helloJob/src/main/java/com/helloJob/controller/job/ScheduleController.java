@@ -102,7 +102,10 @@ public class ScheduleController extends BaseController {
 	 * ***/
 	@RequestMapping("/runOnce")
 	@ResponseBody
-	public Object runOnce(@RequestParam long jobId,@RequestParam String dt,@RequestParam(defaultValue="否") String isSelfRely){
+	public Object runOnce(@RequestParam long jobId,@RequestParam String dt,@RequestParam(defaultValue="否") String isSelfRely,@RequestParam String runOnceWay){
+		
+		System.out.println("###########ScheduleController----------"+runOnceWay);
+		
 		try {
 			if(StringUtils.isEmpty(dt)) {
 				dt =  DateUtils.getNowFormatStr000000() ;
@@ -120,8 +123,8 @@ public class ScheduleController extends BaseController {
 				allTriggerJobs.add(jobId);
 				logger.info("将要kill掉的作业:"+allTriggerJobs);
 				String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
-				//scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
-				//jobInstanceService.delete(allTriggerJobs, dt);
+				scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
+				jobInstanceService.delete(allTriggerJobs, dt);
 				scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
 				ThreadUtils.sleeep(300);
 				return renderSuccess();
