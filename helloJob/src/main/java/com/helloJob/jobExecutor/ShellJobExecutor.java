@@ -16,8 +16,6 @@ public class ShellJobExecutor extends AbstractJobExecutor{
 	public JobExecResult execute(JobBasicInfo job) throws Exception {
 		log.info(JSON.toJSONString(job));
 		String cmd= ExecDateUtils.execDateVariablesReplace(job.getCommand(), this.dt); 
-		System.out.println("####ExecDateUtils.execDateVariablesReplace:"+job.getCommand());
-		System.out.println("####ExecDateUtils.execDateVariablesReplace:"+cmd);
 		job.setCommand( cmd);
 		JobExecResult result = SshUtils.execute(job,this.dt);
 		return result;
