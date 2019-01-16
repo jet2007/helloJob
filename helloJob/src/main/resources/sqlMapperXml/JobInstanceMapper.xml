@@ -19,14 +19,12 @@ AND NOT EXISTS (SELECT 1 FROM job_instance WHERE job_id=t1.pid AND dt=#{dt})
     </delete>
     
     <update id="setTriggerWay">
-    update trigger_way=#{triggerWay}
-    FROM job_instance 
+    update job_instance set trigger_way=#{triggerWay}
     where dt=#{dt}  and job_id =#{jobId}  
     </update>
     
     <update id="setUpdateTime">
-    update update_time=now()
-    FROM job_instance 
+    update job_instance set update_time=now()
     where dt=#{dt}  and job_id =#{jobId}  
     </update>
     
