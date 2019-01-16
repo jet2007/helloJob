@@ -24,7 +24,7 @@ AND NOT EXISTS (SELECT 1 FROM job_instance WHERE job_id=t1.pid AND dt=#{dt})
     </update>
     
     <update id="setUpdateTime">
-    update job_instance set update_time=now()
+    update job_instance set update_time = NOW()
     where dt=#{dt}  and job_id =#{jobId}  
     </update>
     

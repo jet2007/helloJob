@@ -91,8 +91,9 @@ public abstract class AbstractJobExecutor implements Runnable {
 		if (result.isSuccess()) {
 //			JobInstanceService jobInstanceService= context.getBean(JobInstanceService.class);
 //			jobInstanceService.add(job.getId(),dt);
-			
+			System.out.println("#####################查看是否有下一级的作业依赖0001");
 			jobInstanceService.setUpdateTime(job.getId(), dt);
+			System.out.println("#####################查看是否有下一级的作业依赖0002");
 			
 			log.info("作业"+job.getId()+"["+dt+"]执行成功。。查看是否有下一级的作业依赖");
 			
