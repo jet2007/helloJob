@@ -1,5 +1,6 @@
 package com.helloJob.controller.job;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -109,6 +110,9 @@ public class ScheduleController extends BaseController {
 		try {
 			// 手动作业实例，强制删除作业实例
 			if(jobInstanceService.isExistsJobInst(jobId, dt)){
+				Set<Long> j=new HashSet<Long>();
+				j.add(jobId);
+				scheBasicInfoService.killJobs(j,dt,"");
 				jobInstanceService.delete(jobId, dt);
 			} 
 			jobInstanceService.add(jobId, dt, runOnceWay);
@@ -137,7 +141,6 @@ public class ScheduleController extends BaseController {
 				}
 				
 
-				
 				scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
 				ThreadUtils.sleeep(300);
 				return renderSuccess();
