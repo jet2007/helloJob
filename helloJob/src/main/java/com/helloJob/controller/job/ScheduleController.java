@@ -107,7 +107,11 @@ public class ScheduleController extends BaseController {
 		System.out.println("###########ScheduleController runOnceWay----------="+runOnceWay);
 		
 		try {
-			
+			// 手动作业实例，强制删除作业实例
+			if(jobInstanceService.isExistsJobInst(jobId, dt)){
+				jobInstanceService.delete(jobId, dt);
+			} 
+			jobInstanceService.add(jobId, dt, runOnceWay);
 			
 			if(StringUtils.isEmpty(dt)) {
 				dt =  DateUtils.getNowFormatStr000000() ;
@@ -131,11 +135,7 @@ public class ScheduleController extends BaseController {
 					jobInstanceService.delete(allTriggerJobs, dt);
 				}
 				
-				// 手动作业实例，强制删除作业实例
-				if(jobInstanceService.isExistsJobInst(jobId, dt)){
-					jobInstanceService.delete(jobId, dt);
-				} 
-				jobInstanceService.add(jobId, dt, runOnceWay);
+
 				
 				scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
 				ThreadUtils.sleeep(300);
