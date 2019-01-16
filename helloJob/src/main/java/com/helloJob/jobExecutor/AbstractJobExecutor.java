@@ -82,18 +82,33 @@ public abstract class AbstractJobExecutor implements Runnable {
 	public abstract JobExecResult execute(JobBasicInfo job) throws Exception;
 
 	public void executeJob(JobBasicInfo job) throws Exception{
-		jobInstanceService.delete(job.getId(), dt);
+		if( !jobInstanceService.isExistsJobInst(job.getId(), dt)){
+			jobInstanceService.add(job.getId(), dt);
+		}
+		
+		//jobInstanceService.delete(job.getId(), dt);
 		JobExecResult result = execute(job);
 		if (result.isSuccess()) {
-			JobInstanceService jobInstanceService= context.getBean(JobInstanceService.class);
-			jobInstanceService.add(job.getId(),dt);
-			log.info("作业"+job.getId()+"执行成功。。查看是否有下一级的作业依赖");
-			List<ScheRelyJob> scheRelyJobList = scheRelyJobService.getTriggerJobList(job.getId());
-			log.info(job.getId()+"的下级作业有："+JSON.toJSONString(scheRelyJobList));
-			for (ScheRelyJob relyJob : scheRelyJobList) {
-				JobBasicInfo childJob = jobService.get(relyJob.getJobId());
-				CommonJobEntry.execute(childJob,scheBasicInfoService.getScheInfo(relyJob.getJobId()), dt);
+//			JobInstanceService jobInstanceService= context.getBean(JobInstanceService.class);
+//			jobInstanceService.add(job.getId(),dt);
+			
+			jobInstanceService.setUpdateTime(job.getId(), dt);
+			
+			log.info("作业"+job.getId()+"["+dt+"]执行成功。。查看是否有下一级的作业依赖");
+			
+			boolean isTriggerNext = jobInstanceService.isTriggerNextJobsInst(job.getId(), dt);
+			if(isTriggerNext){
+				List<ScheRelyJob> scheRelyJobList = scheRelyJobService.getTriggerJobList(job.getId());
+				String triggerWay = jobInstanceService.getTriggerWay(job.getId(), dt);
+				log.info(job.getId()+"的下级作业有："+JSON.toJSONString(scheRelyJobList));
+				for (ScheRelyJob relyJob : scheRelyJobList) {
+					JobBasicInfo childJob = jobService.get(relyJob.getJobId());
+					jobInstanceService.add(childJob.getId(), dt,triggerWay);
+					CommonJobEntry.execute(childJob,scheBasicInfoService.getScheInfo(relyJob.getJobId()), dt);
+				}
 			}
+			
+			
 		}else {
 			throw new RuntimeException(result.getLog());
 		}

@@ -36,11 +36,16 @@ public class CommonJobEntry {
 					//有依赖上级作业的
 					if(ScheTypeConst.RELY_PRE_JOB.equals(scheType)) {
 						JobInstanceService jobInstanceService = context.getBean(JobInstanceService.class);
-						List<Long> relyJobFailInstanceList = jobInstanceService .getRelyJobFailInstance(job.getId(),dt);
-						// 依赖的上一级都成功了
-						if (relyJobFailInstanceList.size() == 0) {
-							ExecutorService executorService = JobThreadPool.getInstance();
-							executorService.execute(new ShellJobExecutor(job,scheInfo,dt));
+						if( !jobInstanceService.isExistsJobInst(job.getId(), dt)){
+							jobInstanceService.add(job.getId(), dt);
+						}
+						if(jobInstanceService.isRelyPrevJobsInst(job.getId(), dt)){
+							List<Long> relyJobFailInstanceList = jobInstanceService .getRelyJobFailInstance(job.getId(),dt);
+							// 依赖的上一级都成功了
+							if (relyJobFailInstanceList.size() == 0) {
+								ExecutorService executorService = JobThreadPool.getInstance();
+								executorService.execute(new ShellJobExecutor(job,scheInfo,dt));
+							}
 						}
 					}else {
 						//根据时间调度或者运行一次

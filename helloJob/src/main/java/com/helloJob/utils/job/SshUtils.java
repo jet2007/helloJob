@@ -23,7 +23,6 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
-import cn.hutool.core.util.StrUtil;
 
 public class SshUtils {
 	protected static Logger logger = LogManager.getLogger(SshUtils.class);

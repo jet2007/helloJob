@@ -29,5 +29,6 @@ public class JobInstance implements Serializable {
 	public void setId(Long jobId, String dt) {
 		this.id = jobId+"_"+dt;
 	}
+	public String triggerWay = "01";
 	
 }

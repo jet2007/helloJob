@@ -263,7 +263,9 @@ table.pgTable td.tdTitle{
 		</div>
 		<div style="margin-top:10px">方式&nbsp;&nbsp;&nbsp;&nbsp;
 				  		<select id="runOnceWay" class="easyui-combobox" data-options="panelHeight:'auto',width:400">
-				  			<option value="1">启动本作业及后续依赖作业(强制kill后续依赖作业)</option>
+				  			<option value="13">启动作业(不依赖上游作业)</option>
+				  			<option value="12">启动作业(依赖上游作业)</option>
+				  			<option value="11">启动作业及下游依赖作业(依赖上游作业且强制kill下游依赖作业)</option>
 				  		</select>
 		</div>
 </div>

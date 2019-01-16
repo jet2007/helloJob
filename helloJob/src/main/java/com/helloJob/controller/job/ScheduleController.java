@@ -104,9 +104,11 @@ public class ScheduleController extends BaseController {
 	@ResponseBody
 	public Object runOnce(@RequestParam long jobId,@RequestParam String dt,@RequestParam(defaultValue="否") String isSelfRely,@RequestParam String runOnceWay){
 		
-		//System.out.println("###########ScheduleController----------"+runOnceWay);
+		System.out.println("###########ScheduleController runOnceWay----------="+runOnceWay);
 		
 		try {
+			
+			
 			if(StringUtils.isEmpty(dt)) {
 				dt =  DateUtils.getNowFormatStr000000() ;
 			}
@@ -118,13 +120,23 @@ public class ScheduleController extends BaseController {
 			}
 			List<Long> relyJobFailInstanceList = jobInstanceService.getRelyJobFailInstance(jobId,dt);
 			if(relyJobFailInstanceList.size() == 0) {
-				//kill掉子孙作业作业正在运行的实例
-				Set<Long> allTriggerJobs = scheRelyJobService.getAllTriggerJobs(jobId);
-				allTriggerJobs.add(jobId);
-				logger.info("将要kill掉的作业:"+allTriggerJobs);
-				String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
-				scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
-				jobInstanceService.delete(allTriggerJobs, dt);
+	
+				if(jobInstanceService.isKillNextJobsInst(jobId, dt) ){ 
+					//kill掉子孙作业作业正在运行的实例
+					Set<Long> allTriggerJobs = scheRelyJobService.getAllTriggerJobs(jobId);
+					allTriggerJobs.add(jobId);
+					logger.info("将要kill掉的作业:"+allTriggerJobs);
+					String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
+					scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
+					jobInstanceService.delete(allTriggerJobs, dt);
+				}
+				
+				// 手动作业实例，强制删除作业实例
+				if(jobInstanceService.isExistsJobInst(jobId, dt)){
+					jobInstanceService.delete(jobId, dt);
+				} 
+				jobInstanceService.add(jobId, dt, runOnceWay);
+				
 				scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
 				ThreadUtils.sleeep(300);
 				return renderSuccess();
