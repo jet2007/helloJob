@@ -8,7 +8,7 @@ AND NOT EXISTS (SELECT 1 FROM job_instance WHERE job_id=t1.pid AND dt=#{dt})
     </select>
     
       <select id="getTriggerWay" resultType="String" >
-		SELECT trigger_way from job_instance where dt=#{dt}) and job_id =#{jobId}  
+		SELECT trigger_way from job_instance where dt=#{dt} and job_id =#{jobId}  
     </select>
     
     <delete id="delete" parameterType="java.lang.Long">
