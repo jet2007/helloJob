@@ -132,6 +132,7 @@ public class ScheduleController extends BaseController {
 					logger.info("将要kill掉的作业:"+allTriggerJobs);
 					String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
 					scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
+					allTriggerJobs.remove(jobId);
 					jobInstanceService.delete(allTriggerJobs, dt);
 				}
 				
