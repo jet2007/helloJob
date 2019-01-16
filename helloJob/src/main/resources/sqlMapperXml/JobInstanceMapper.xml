@@ -21,13 +21,13 @@ AND NOT EXISTS (SELECT 1 FROM job_instance WHERE job_id=t1.pid AND dt=#{dt})
     <update id="setTriggerWay">
     update trigger_way=#{triggerWay}
     FROM job_instance 
-    where dt=#{dt}) and job_id =#{jobId}  
+    where dt=#{dt} and job_id =#{jobId}  
     </update>
     
     <update id="setUpdateTime">
     update update_time=now()
     FROM job_instance 
-    where dt=#{dt}) and job_id =#{jobId}  
+    where dt=#{dt} and job_id =#{jobId}  
     </update>
     
 </mapper>
