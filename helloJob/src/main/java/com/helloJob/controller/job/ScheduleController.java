@@ -108,7 +108,7 @@ public class ScheduleController extends BaseController {
 		System.out.println("###########ScheduleController runOnceWay----------="+runOnceWay);
 		
 		try {
-			// 手动作业实例，强制删除作业实例
+			// 手动作业实例，强制kill和删除作业实例
 			if(jobInstanceService.isExistsJobInst(jobId, dt)){
 				Set<Long> j=new HashSet<Long>();
 				j.add(jobId);
@@ -126,27 +126,28 @@ public class ScheduleController extends BaseController {
 					throw new RuntimeException("操作失败！作业"+jobId+"自依赖失败。dt="+dt);
 				}
 			}
-			List<Long> relyJobFailInstanceList = jobInstanceService.getRelyJobFailInstance(jobId,dt);
-			if(relyJobFailInstanceList.size() == 0) {
-	
-				if(jobInstanceService.isKillNextJobsInst(jobId, dt) ){ 
-					//kill掉子孙作业作业正在运行的实例
-					Set<Long> allTriggerJobs = scheRelyJobService.getAllTriggerJobs(jobId);
-					allTriggerJobs.add(jobId);
-					logger.info("将要kill掉的作业:"+allTriggerJobs);
-					String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
-					scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
-					allTriggerJobs.remove(jobId);
-					jobInstanceService.delete(allTriggerJobs, dt);
+			
+			//上游依赖
+			if(jobInstanceService.isRelyPrevJobsInst(jobId, dt)){
+				List<Long> relyJobFailInstanceList = jobInstanceService.getRelyJobFailInstance(jobId,dt);
+				if(relyJobFailInstanceList.size() == 0) {//上游作业没执行完成
+					if(jobInstanceService.isKillNextJobsInst(jobId, dt) ){ 
+						//kill掉下游作业正在运行的实例
+						Set<Long> allTriggerJobs = scheRelyJobService.getAllTriggerJobs(jobId);
+						allTriggerJobs.add(jobId);
+						logger.info("将要kill掉的作业:"+allTriggerJobs);
+						String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
+						scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
+						allTriggerJobs.remove(jobId);
+						jobInstanceService.delete(allTriggerJobs, dt);
+					}
+				}else {
+					throw new RuntimeException("操作失败！作业"+jobId+"依赖的作业"+ JSON.toJSONString(relyJobFailInstanceList)+"尚未成功。dt="+dt);
 				}
-				
-
-				scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
-				ThreadUtils.sleeep(300);
-				return renderSuccess();
-			}else {
-				throw new RuntimeException("操作失败！作业"+jobId+"依赖的作业"+ JSON.toJSONString(relyJobFailInstanceList)+"尚未成功。dt="+dt);
 			}
+			scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
+			ThreadUtils.sleeep(300);
+			return renderSuccess();
 			
 		}catch(Exception e) {
 			e.printStackTrace();

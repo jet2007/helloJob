@@ -3,8 +3,8 @@
 <mapper namespace="com.helloJob.mapper.job.JobInstanceMapper">
 
   <select id="getRelyJobFailInstance" resultType="Long" >
-		SELECT t1.pid FROM `sche_rely_job` t1 WHERE t1.job_id=#{jobId}
-AND NOT EXISTS (SELECT 1 FROM job_instance WHERE job_id=t1.pid AND dt=#{dt})
+		SELECT DISTINCT t1.pid FROM `sche_rely_job` t1 WHERE t1.job_id=#{jobId}
+AND NOT EXISTS (SELECT 1 FROM job_log WHERE job_id=t1.pid AND dt=#{dt} AND job_state='成功' )
     </select>
     
       <select id="getTriggerWay" resultType="String" >
