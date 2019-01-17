@@ -18,7 +18,7 @@ WHERE t1.id IN
    
      <select id="getTreeListJobInst" resultType="com.helloJob.commons.result.Tree" parameterType="java.util.Set">
 SELECT A1.`id`
-      ,IF(A1.pid IS NOT NOT NULL , A1.pid,-999999) AS pid 
+      ,IF(A1.pid IS NOT NULL , A1.pid , -999999) AS pid 
       ,IF(A2.job_id IS NOT NULL ,
         CONCAT(A1.job_name,'(id=',A1.id , ',总计[',A2.total,']',
               IF(A2.total_succ>0,CONCAT(',成功[',A2.total_succ,']'),''),
@@ -57,7 +57,7 @@ group BY job_id
 union all
 SELECT -999999 AS `id`
        ,null as pid 
-       ,CONCAT('实例日期',#{dt}) `text` 
+       ,CONCAT('执行日期',#{dt}) `text` 
    </select> 
    
      <select id="getTriggerJobs" resultType="Long" >
