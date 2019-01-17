@@ -19,7 +19,6 @@ WHERE t1.id IN
      <select id="getTreeListJobInst" resultType="com.helloJob.commons.result.Tree" parameterType="java.util.Set">
 SELECT A1.`id`
       ,A1.pid
-      ,CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{dt} ,')'  ) `text` 
       ,IF(A2.job_id IS NOT NULL ,
         CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{jobId} ,'总计[',A2.total,
               IF(A2.total_succ>0,CONCAT(',成功[',A2.total_succ,']'),''),
@@ -27,7 +26,7 @@ SELECT A1.`id`
               IF(A2.total_fail>0,CONCAT(',失败[',A2.total_fail,']'),'')
               ,')'
               ) 
-        ,CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{dt} ,'未执行')
+        ,CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{dt} ,',未执行')
         ) AS `text` 
       
   FROM (
@@ -47,7 +46,7 @@ LEFT JOIN (
         ,SUM(CASE WHEN job_state='执行中' THEN 1 ELSE 0 END ) AS  total_running
         ,SUM(CASE WHEN job_state='失败' THEN 1 ELSE 0 END )  AS total_fail
     FROM job_log 
-   WHERE `id` IN
+   WHERE job_id IN
   <foreach collection="referJobIds" index="index" item="jobId" open="(" separator="," close=")">  
             #{jobId}  
         </foreach>  
