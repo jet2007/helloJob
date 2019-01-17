@@ -45,9 +45,7 @@ public class ScheBasicInfoServiceImpl  extends ServiceImpl< ScheBasicInfoMapper,
 		ScheBasicInfo scheInfo =new ScheBasicInfo();
 		scheInfo.setIsSelfRely(isSelfRely);
 		scheInfo.setTryCount(0);
-		//System.out.println("#################ScheBasicInfoServiceImpl.execute---001");
 		CommonJobEntry.execute(job,scheInfo, dt);
-		//System.out.println("#################ScheBasicInfoServiceImpl.execute---002");
 	}
 	@Override
 	public ScheBasicInfo getScheInfo(Long jobId) {

@@ -104,9 +104,6 @@ public class ScheduleController extends BaseController {
 	@RequestMapping("/runOnce")
 	@ResponseBody
 	public Object runOnce(@RequestParam long jobId,@RequestParam String dt,@RequestParam(defaultValue="否") String isSelfRely,@RequestParam String runOnceWay){
-		
-		System.out.println("###########ScheduleController runOnceWay----------="+runOnceWay);
-		
 		try {
 			// 手动作业实例，强制kill和删除作业实例
 			if(jobInstanceService.isExistsJobInst(jobId, dt)){
