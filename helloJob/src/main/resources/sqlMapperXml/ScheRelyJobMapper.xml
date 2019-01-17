@@ -20,7 +20,7 @@ WHERE t1.id IN
 SELECT A1.`id`
       ,A1.pid
       ,IF(A2.job_id IS NOT NULL ,
-        CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{dt} ,'总计[',A2.total,'],'
+        CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{dt} ,'总计[',A2.total,'],',
               IF(A2.total_succ>0,CONCAT(',成功[',A2.total_succ,']'),''),
               IF(A2.total_running>0,CONCAT(',执行中[',A2.total_running,']'),''),
               IF(A2.total_fail>0,CONCAT(',失败[',A2.total_fail,']'),'')
