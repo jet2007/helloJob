@@ -29,6 +29,13 @@ public interface ScheRelyJobService {
 	 * 获取作业树
 	 * ***/
 	public List<Tree> getTreeList(Long jobId);
+	
+	
+	/**
+	 * 获取作业实例树
+	 * ***/
+	public List<Tree> getTreeListJobInst(Long jobId,String dt);
+	
 	/**
 	 * 获取其要触发的子作业(不含孙子作业)
 	 * **/

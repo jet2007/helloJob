@@ -14,6 +14,8 @@ public interface ScheRelyJobMapper   extends BaseMapper<ScheRelyJob>{
 	List<Long> getReferJobIdsOfOneJob(@Param("jobId") Long jobId);
 
 	List<Tree> getTreeList(@Param("referJobIds") Set<Long> referJobIds);
+	
+	List<Tree> getTreeListJobInst(@Param("referJobIds") Set<Long> referJobIds,@Param("dt") String dt);
 
 	List<Long> getTriggerJobs(@Param("jobId") Long jobId);
 

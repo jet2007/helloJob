@@ -33,7 +33,7 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeLog()">查看日志</a>
  	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.runOnce()">手工执行</a>
  	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.setSuccess()">设为成功</a>
-	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeJobTree()">作业树</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeJobTreeJobInst()">作业树</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-no" plain="true" onclick="jobLogMvc.Controller.killJob()">停止运行</a>
 </div>
  <div data-options="region:'center',border:true" >

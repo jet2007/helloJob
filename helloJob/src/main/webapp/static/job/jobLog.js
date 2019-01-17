@@ -207,8 +207,48 @@ var jobLogMvc = {
 						});
 			});
 		}
-	}
-	,Service : {
+		,
+		seeJobTreeJobInst : function() {
+			var row = jobLogMvc.Service.getSelectRow();
+			var param = {};
+			param.jobId = row.jobId;
+			param.dt = row.dt;
+			easyUtils.post(path + "/scheRelyJob/getTreeListJobInst?", param, function(obj) {
+				$('#jobTree').tree(
+						{
+							data : obj,
+							parentField : 'pid',
+							lines : true,
+							checkbox : false,
+							onClick : function(node) {
+								$("#jobTree .tree-title").each(
+										function(index, dom) {
+											if (node.text == $(this).html()) {
+												$(this).parent().addClass(
+														"tree-node-selected");
+											} else {
+												$(this).parent().removeClass(
+														"tree-node-selected");
+											}
+										});
+							},
+							onLoadSuccess : function(node, data) {
+								$("#jobTreeDlg").show().dialog({
+									top : 30,
+									buttons : [ {
+										text : '关闭',
+										handler : function() {
+											$("#jobTreeDlg").dialog("close");
+										}
+									} ]
+								}).dialog("open");
+							},
+							animate : true
+						});
+			});
+		}
+		
+	},Service : {
 		getJobLogParam : function() {
 			var param =	easyuiUtils.getParam("jobLogForm");
 			return param;
