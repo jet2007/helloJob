@@ -18,15 +18,15 @@ WHERE t1.id IN
    
      <select id="getTreeListJobInst" resultType="com.helloJob.commons.result.Tree" parameterType="java.util.Set">
 SELECT A1.`id`
-      ,A1.pid
+      ,IF(A1.pid IS NOT NOT NULL , A1.pid,-999999) AS pid 
       ,IF(A2.job_id IS NOT NULL ,
-        CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{dt} ,',总计[',A2.total,'],',
+        CONCAT(A1.job_name,'(id=',A1.id , ',总计[',A2.total,']',
               IF(A2.total_succ>0,CONCAT(',成功[',A2.total_succ,']'),''),
               IF(A2.total_running>0,CONCAT(',执行中[',A2.total_running,']'),''),
               IF(A2.total_fail>0,CONCAT(',失败[',A2.total_fail,']'),'')
               ,')'
               ) 
-        ,CONCAT(A1.job_name,'(id=',A1.id,',dt=',#{dt} ,',未执行)')
+        ,CONCAT(A1.job_name,'(id=',A1.id , ',未执行)')
         ) AS `text` 
   FROM (
     SELECT t1.`id`,t2.pid,t1.job_name
@@ -53,6 +53,11 @@ LEFT JOIN (
 group BY job_id 
           ) A2
        ON A1.id=A2.job_id
+
+union all
+SELECT -999999 AS `id`
+       ,null as pid 
+       ,CONCAT('实例日期',#{dt}) `text` 
    </select> 
    
      <select id="getTriggerJobs" resultType="Long" >
