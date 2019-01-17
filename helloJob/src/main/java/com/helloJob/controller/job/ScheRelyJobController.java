@@ -18,10 +18,22 @@ import com.helloJob.service.job.ScheRelyJobService;
 public class ScheRelyJobController extends BaseController{
 	@Autowired
 	private ScheRelyJobService scheRelyJobService;
+	
 	@ResponseBody
 	@RequestMapping("/getTreeList")
 	public Object getTreeList(@RequestParam Long jobId) {
 		List<Tree> treeList = scheRelyJobService.getTreeList(jobId);
+		if(CollectionUtils.isEmpty(treeList)) {
+			return renderError("作业不存在 ！");
+		}
+		return renderSuccess(treeList);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/getTreeListJobInst")
+	public Object getTreeListJobInst(@RequestParam Long jobId,@RequestParam String dt) {
+		List<Tree> treeList = scheRelyJobService.getTreeListJobInst(jobId, dt);
 		if(CollectionUtils.isEmpty(treeList)) {
 			return renderError("作业不存在 ！");
 		}
