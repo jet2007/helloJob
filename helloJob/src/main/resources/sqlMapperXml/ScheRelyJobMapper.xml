@@ -47,7 +47,7 @@ LEFT JOIN (
         ,SUM(CASE WHEN job_state='执行中' THEN 1 ELSE 0 END ) AS  total_running
         ,SUM(CASE WHEN job_state='失败' THEN 1 ELSE 0 END )  AS total_fail
     FROM job_log 
-   WHERE t1.id IN
+   WHERE `id` IN
   <foreach collection="referJobIds" index="index" item="jobId" open="(" separator="," close=")">  
             #{jobId}  
         </foreach>  
