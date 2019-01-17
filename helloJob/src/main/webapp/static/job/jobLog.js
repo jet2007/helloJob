@@ -170,43 +170,8 @@ var jobLogMvc = {
 									jobLogDg.datagrid("reload");
 								});
 					});
-		},
-		seeJobTree : function() {
-			var row = jobLogMvc.Service.getSelectRow();
-			easyUtils.post(path + "/scheRelyJob/getTreeList?", {jobId : row.jobId}, function(obj) {
-				$('#jobTree').tree(
-						{
-							data : obj,
-							parentField : 'pid',
-							lines : true,
-							checkbox : false,
-							onClick : function(node) {
-								$("#jobTree .tree-title").each(
-										function(index, dom) {
-											if (node.text == $(this).html()) {
-												$(this).parent().addClass(
-														"tree-node-selected");
-											} else {
-												$(this).parent().removeClass(
-														"tree-node-selected");
-											}
-										});
-							},
-							onLoadSuccess : function(node, data) {
-								$("#jobTreeDlg").show().dialog({
-									top : 30,
-									buttons : [ {
-										text : '关闭',
-										handler : function() {
-											$("#jobTreeDlg").dialog("close");
-										}
-									} ]
-								}).dialog("open");
-							},
-							animate : true
-						});
-			});
 		}
+		
 		,
 		seeJobTreeJobInst : function() {
 			var row = jobLogMvc.Service.getSelectRow();
@@ -247,6 +212,44 @@ var jobLogMvc = {
 						});
 			});
 		}
+		
+		,
+		seeJobTree : function() {
+			var row = jobLogMvc.Service.getSelectRow();
+			easyUtils.post(path + "/scheRelyJob/getTreeList?", {jobId : row.jobId}, function(obj) {
+				$('#jobTree').tree(
+						{
+							data : obj,
+							parentField : 'pid',
+							lines : true,
+							checkbox : false,
+							onClick : function(node) {
+								$("#jobTree .tree-title").each(
+										function(index, dom) {
+											if (node.text == $(this).html()) {
+												$(this).parent().addClass(
+														"tree-node-selected");
+											} else {
+												$(this).parent().removeClass(
+														"tree-node-selected");
+											}
+										});
+							},
+							onLoadSuccess : function(node, data) {
+								$("#jobTreeDlg").show().dialog({
+									top : 30,
+									buttons : [ {
+										text : '关闭',
+										handler : function() {
+											$("#jobTreeDlg").dialog("close");
+										}
+									} ]
+								}).dialog("open");
+							},
+							animate : true
+						});
+			});
+		},
 		
 	},Service : {
 		getJobLogParam : function() {
