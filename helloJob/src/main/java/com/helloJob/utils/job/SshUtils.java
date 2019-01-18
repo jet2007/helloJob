@@ -51,8 +51,8 @@ public class SshUtils {
 			String cmd;
 			// 增加使用jobtype的cmd列，来自定义命令
 			// jobTypeCmd示例    hive -e "%s" --> 实现执行hive命令
-			if(StringUtils.isNotBlank(jobTypeCmd) && jobTypeCmd.contains("%s")){
-				cmd=String.format(jobTypeCmd,jobCmd);
+			if(StringUtils.isNotBlank(jobTypeCmd) && jobTypeCmd.contains("${command}")){
+				cmd=jobTypeCmd.replace("${command}", jobCmd);
 			}
 			else{
 				cmd=jobCmd;
