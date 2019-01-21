@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.alibaba.fastjson.JSON;
+import com.helloJob.constant.JobStateConst;
 import com.helloJob.model.job.JobBasicInfo;
 import com.helloJob.model.job.ScheBasicInfo;
 import com.helloJob.model.job.ScheRelyJob;
@@ -91,7 +92,7 @@ public abstract class AbstractJobExecutor implements Runnable {
 		if (result.isSuccess()) {
 //			JobInstanceService jobInstanceService= context.getBean(JobInstanceService.class);
 //			jobInstanceService.add(job.getId(),dt);
-			jobInstanceService.setUpdateTime(job.getId(), dt);
+			jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.SUCCESS);;
 			
 			log.info("作业"+job.getId()+"["+dt+"]执行成功。。查看是否有下一级的作业依赖");
 			
@@ -102,7 +103,9 @@ public abstract class AbstractJobExecutor implements Runnable {
 				log.info(job.getId()+"的下级作业有："+JSON.toJSONString(scheRelyJobList));
 				for (ScheRelyJob relyJob : scheRelyJobList) {
 					JobBasicInfo childJob = jobService.get(relyJob.getJobId());
-					jobInstanceService.add(childJob.getId(), dt,triggerWay);
+					if( !jobInstanceService.isExistsJobInst(childJob.getId(), dt)){
+						jobInstanceService.add(childJob.getId(), dt,triggerWay);
+					}
 					CommonJobEntry.execute(childJob,scheBasicInfoService.getScheInfo(relyJob.getJobId()), dt);
 				}
 			}
