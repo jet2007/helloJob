@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 public class JobThreadPool {
     private static ExecutorService pool; 
     static{
-    	pool = Executors.newFixedThreadPool(10);
+    	pool = Executors.newFixedThreadPool(1000);
     }
     public static ExecutorService getInstance(){
     	return pool;

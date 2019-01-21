@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.helloJob.constant.JobInstanceTriggerWayConst;
+import com.helloJob.constant.JobStateConst;
 import com.helloJob.mapper.job.JobInstanceMapper;
 import com.helloJob.model.job.JobInstance;
 import com.helloJob.service.job.JobInstanceService;
@@ -34,7 +36,7 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 
 	@Override
 	public void add(Long jobId, String dt) {
-		add(jobId, dt, "01");
+		add(jobId, dt, JobInstanceTriggerWayConst.AUTO);
 	}
 	
 	@Override
@@ -45,6 +47,7 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 		bean.setDt(dt);
 		bean.setId(jobId,dt);
 		bean.setTriggerWay(triggerWay);
+		bean.setState(JobStateConst.QUEUE);
 		jobInstanceMapper.insert(bean);
 	}
 
@@ -87,24 +90,12 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 		}
 	}
 
-	@Override
-	public void setTriggerWay(Long jobId, String dt,String triggerWay) {
-		jobInstanceMapper.setTriggerWay(jobId, dt, triggerWay);
-	}
-	
-	@Override
-	public String getTriggerWay(Long jobId, String dt) {
-		return jobInstanceMapper.getTriggerWay(jobId, dt);
-		// 01:自动(启动作业及下游依赖作业,依赖上游作业)
-		// 11:启动作业及下游依赖作业(依赖上游作业且强制kill下游依赖作业)
-		// 12:启动作业(依赖上游作业)
-		// 13:单个作业(不依赖上游作业)
-	}
+
 	
 	@Override
 	public boolean isKillNextJobsInst(Long jobId, String dt) {
 		String triggerWay = getTriggerWay(jobId,dt);
-		if(triggerWay.equals("11"))
+		if(triggerWay.equals(JobInstanceTriggerWayConst.MAN_DOWNS))
 			return true;
 		else
 			return false;
@@ -113,7 +104,9 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 	@Override
 	public boolean isRelyPrevJobsInst(Long jobId, String dt) {
 		String triggerWay = getTriggerWay(jobId,dt);
-		if(triggerWay.equals("01") || triggerWay.equals("11") || triggerWay.equals("12") ){
+		if(triggerWay.equals(JobInstanceTriggerWayConst.AUTO)
+				|| triggerWay.equals(JobInstanceTriggerWayConst.MAN_DOWNS) 
+				|| triggerWay.equals(JobInstanceTriggerWayConst.MAN_ONE_RELY) ){
 			return true;
 		}
 		else{
@@ -125,7 +118,8 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 	@Override
 	public boolean isTriggerNextJobsInst(Long jobId, String dt) {
 		String triggerWay = getTriggerWay(jobId,dt);
-		if(triggerWay.equals("01") || triggerWay.equals("11")){
+		if(triggerWay.equals(JobInstanceTriggerWayConst.AUTO) 
+				|| triggerWay.equals(JobInstanceTriggerWayConst.MAN_DOWNS)){
 			return true;
 		}
 		else{
@@ -143,9 +137,38 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 
 	@Override
 	public void setUpdateTime(Long jobId, String dt) {
-		jobInstanceMapper.setUpdateTime(jobId, dt);		
+		JobInstance ji = getJobInst(jobId,dt);
+		ji.setUpdateTime(DateUtils.getCreateTime());
+		jobInstanceMapper.updateById(ji);
+	}
+	
+	@Override
+	public JobInstance getJobInst(Long jobId, String dt) {
+		Wrapper<JobInstance> wrapper = new EntityWrapper<>();
+		wrapper.where("job_id={0} and dt = {1}", jobId,dt);
+		return  wrapper.getEntity();
+	}
+	
+	@Override
+	public void setJobInstState(Long jobId, String dt, String state) {
+		JobInstance ji = getJobInst(jobId,dt);
+		ji.setState(state);
+		jobInstanceMapper.updateById(ji);
 	}
 	
 	
+	@Override
+	public void setTriggerWay(Long jobId, String dt,String triggerWay) {
+		//jobInstanceMapper.setTriggerWay(jobId, dt, triggerWay);
+		JobInstance ji = getJobInst(jobId,dt);
+		ji.setTriggerWay(triggerWay);
+		jobInstanceMapper.updateById(ji);
+	}
+	
+	@Override
+	public String getTriggerWay(Long jobId, String dt) {
+		//return jobInstanceMapper.getTriggerWay(jobId, dt);
+		return getJobInst(jobId,dt).getTriggerWay();
+	}
 	
 }

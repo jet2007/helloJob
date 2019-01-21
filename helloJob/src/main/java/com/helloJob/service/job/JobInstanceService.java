@@ -3,6 +3,8 @@ package com.helloJob.service.job;
 import java.util.List;
 import java.util.Set;
 
+import com.helloJob.model.job.JobInstance;
+
 public interface JobInstanceService {
 	
 	/**
@@ -59,6 +61,7 @@ public interface JobInstanceService {
 	
 	public boolean isExistsJobInst(Long jobId,String dt);
 	
+	public void setJobInstState(Long jobId,String dt,String state);
 	
-	
+	public JobInstance getJobInst(Long jobId,String dt);
 }

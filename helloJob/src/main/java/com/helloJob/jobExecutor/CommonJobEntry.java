@@ -17,6 +17,7 @@ import com.helloJob.service.job.JobInstanceService;
 import com.helloJob.service.job.JobLogService;
 import com.helloJob.utils.ApplicationContextUtil;
 import com.helloJob.utils.DateUtils;
+import com.helloJob.utils.ThreadUtils;
 import com.helloJob.utils.job.JobThreadPool;
 
 public class CommonJobEntry {
@@ -33,23 +34,44 @@ public class CommonJobEntry {
 				if((endTime !=null && endTime >=toDay)  || endTime ==null ) {
 					String scheType = scheInfo.getScheType();
 					//有依赖上级作业的
+					JobInstanceService jobInstanceService = context.getBean(JobInstanceService.class);
 					if(ScheTypeConst.RELY_PRE_JOB.equals(scheType)) {
-						JobInstanceService jobInstanceService = context.getBean(JobInstanceService.class);
 						if( !jobInstanceService.isExistsJobInst(job.getId(), dt)){
 							jobInstanceService.add(job.getId(), dt);
-						}
-						if(jobInstanceService.isRelyPrevJobsInst(job.getId(), dt)){
-							List<Long> relyJobFailInstanceList = jobInstanceService .getRelyJobFailInstance(job.getId(),dt);
-							// 依赖的上一级都成功了
-							if (relyJobFailInstanceList.size() == 0) {
-								ExecutorService executorService = JobThreadPool.getInstance();
-								executorService.execute(new ShellJobExecutor(job,scheInfo,dt));
+						}else{
+							if(jobInstanceService.isRelyPrevJobsInst(job.getId(), dt)){
+								String jobState = jobInstanceService.getJobInst(job.getId(), dt).getState();
+								if(jobState.equals(JobStateConst.QUEUE)){
+									List<Long> relyJobFailInstanceList = jobInstanceService .getRelyJobFailInstance(job.getId(),dt);
+									// 依赖的上一级都成功了
+									while(relyJobFailInstanceList.size() > 0){
+										ThreadUtils.sleeep(10*1000);
+										relyJobFailInstanceList = jobInstanceService .getRelyJobFailInstance(job.getId(),dt);
+									}
+									if (relyJobFailInstanceList.size() == 0) {
+										ExecutorService executorService = JobThreadPool.getInstance();
+										jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.RUNNING);
+										executorService.execute(new ShellJobExecutor(job,scheInfo,dt));
+										jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.SUCCESS);
+									}
+								}else{//作业实例已经启动过了
+									while(!jobState.equals(JobStateConst.SUCCESS)){
+										ThreadUtils.sleeep(10*1000);
+										jobState = jobInstanceService.getJobInst(job.getId(), dt).getState();
+									}
+								}
+								
+								
+
 							}
 						}
+						
 					}else {
 						//根据时间调度或者运行一次
 						ExecutorService executorService = JobThreadPool.getInstance();
+						jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.RUNNING);
 						executorService.execute(new ShellJobExecutor(job,scheInfo,dt));
+						jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.SUCCESS);
 					}
 				}else {
 					jobLogService.add(job.getId(), dt, JobStateConst.WARNING,"未执行调用作业！<br>超出作业执行结束时间 ！结束时间为："+endTime);

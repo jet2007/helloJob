@@ -58,7 +58,9 @@ public class SshUtils {
 				cmd=jobCmd;
 			}
 			
-			logger.info(String.format("执行命令:jobtype=[%s]\ncmd-detail=[%s]",jobType.getName(),cmd));
+			//logger.info(String.format("执行命令:jobtype=[%s]\ncmd-detail=[%s]",jobType.getName(),cmd));
+			
+			logger.info(String.format("执行命令:jobtype=[%s]\njobid=[%s]",jobType.getName(),job.getId()));
 			
 			Session session = jsch.getSession(userName, host, port);
 			// 根据用户名，主机ip，端口获取一个Session对象

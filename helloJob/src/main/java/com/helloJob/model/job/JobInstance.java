@@ -30,5 +30,8 @@ public class JobInstance implements Serializable {
 		this.id = jobId+"_"+dt;
 	}
 	public String triggerWay = "01";
+	public String state;
+	@TableField(value="update_time")
+	public String updateTime;
 	
 }
