@@ -48,6 +48,9 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
 - git clone https://github.com/jet2007/helloJob
 - 配置
   - 数据库：doc/helloJob.sql(解压，包含若干示例job)
+    - 创建用户dev/01
+    - host有若干条，请修正相应密码
+    - 10000编号起的作业
   - 数据库连接配置：src/main/application.properties
   - 作业告警发件邮箱配置：src/main/email.properties
 - 在pom.xml所在目录，执行mvn clean package -DskipTests=true，生成target/*.war包
