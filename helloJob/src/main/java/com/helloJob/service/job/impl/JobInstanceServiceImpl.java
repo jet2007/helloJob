@@ -155,6 +155,7 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 	public void setJobInstState(Long jobId, String dt, String state) {
 		JobInstance ji = getJobInst(jobId,dt);
 		ji.setState(state);
+		ji.setUpdateTime(DateUtils.getCreateTime());
 		jobInstanceMapper.updateById(ji);
 	}
 	

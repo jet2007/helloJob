@@ -84,7 +84,7 @@ public class JobLogController extends BaseController{
 				String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+":"+getStaffName()+"将该作业设为成功！</div><br>";
 				jobLog.setLog(firstLineLog+jobLog.getLog());
 				jobLogService.updateSuccess(jobLog);
-				jobInstanceService.add(jobLog.getJobId(), jobLog.getDt());
+				//jobInstanceService.up(jobLog.getJobId(), jobLog.getDt());
 				return renderSuccess();
 			}else {
 				return renderError("该作业尚未结束！");
