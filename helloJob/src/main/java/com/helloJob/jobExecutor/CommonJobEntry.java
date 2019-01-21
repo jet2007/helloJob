@@ -23,7 +23,7 @@ import com.helloJob.utils.job.JobThreadPool;
 public class CommonJobEntry {
 	public static final Logger log = LoggerFactory.getLogger(CommonJobEntry.class.getName());
 	public static void execute(JobBasicInfo job,ScheBasicInfo scheInfo,String dt) {
-			log.info("作业被调起："+JSON.toJSONString(job));
+			//log.info("作业被调起："+JSON.toJSONString(job));
 			Long beginTime = StringUtils.isNotBlank(scheInfo.getBeginTime())  ? Long.valueOf( scheInfo.getBeginTime()):-1L;
 			Long endTime =StringUtils.isNotBlank(scheInfo.getEndTime()) ? Long.valueOf(scheInfo.getEndTime()):99999999999999L;
 			Long toDay = Long.valueOf(DateUtils.getNowFormatStr());
@@ -60,9 +60,6 @@ public class CommonJobEntry {
 										jobState = jobInstanceService.getJobInst(job.getId(), dt).getState();
 									}
 								}
-								
-								
-
 							}
 						}
 						

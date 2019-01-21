@@ -144,9 +144,11 @@ public class JobInstanceServiceImpl  extends ServiceImpl<JobInstanceMapper, JobI
 	
 	@Override
 	public JobInstance getJobInst(Long jobId, String dt) {
-		Wrapper<JobInstance> wrapper = new EntityWrapper<>();
-		wrapper.where("job_id={0} and dt = {1}", jobId,dt);
-		return  wrapper.getEntity();
+		return jobInstanceMapper.selectById(jobId+"_"+dt);
+		
+// 		Wrapper<JobInstance> wrapper = new EntityWrapper<>();
+// 		wrapper.where("job_id={0} and dt = {1}", jobId,dt);
+// 		return  wrapper.getEntity();
 	}
 	
 	@Override
