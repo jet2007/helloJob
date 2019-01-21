@@ -50,9 +50,7 @@ public class CommonJobEntry {
 									}
 									if (relyJobFailInstanceList.size() == 0) {
 										ExecutorService executorService = JobThreadPool.getInstance();
-										jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.RUNNING);
 										executorService.execute(new ShellJobExecutor(job,scheInfo,dt));
-										jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.SUCCESS);
 									}
 								}else{//作业实例已经启动过了
 									while(!jobState.equals(JobStateConst.SUCCESS)){
@@ -66,9 +64,7 @@ public class CommonJobEntry {
 					}else {
 						//根据时间调度或者运行一次
 						ExecutorService executorService = JobThreadPool.getInstance();
-						jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.RUNNING);
 						executorService.execute(new ShellJobExecutor(job,scheInfo,dt));
-						jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.SUCCESS);
 					}
 				}else {
 					jobLogService.add(job.getId(), dt, JobStateConst.WARNING,"未执行调用作业！<br>超出作业执行结束时间 ！结束时间为："+endTime);

@@ -88,6 +88,7 @@ public abstract class AbstractJobExecutor implements Runnable {
 		}
 		
 		//jobInstanceService.delete(job.getId(), dt);
+		jobInstanceService.setJobInstState(job.getId(), dt, JobStateConst.RUNNING);
 		JobExecResult result = execute(job);
 		if (result.isSuccess()) {
 //			JobInstanceService jobInstanceService= context.getBean(JobInstanceService.class);
@@ -105,8 +106,18 @@ public abstract class AbstractJobExecutor implements Runnable {
 					JobBasicInfo childJob = jobService.get(relyJob.getJobId());
 					if( !jobInstanceService.isExistsJobInst(childJob.getId(), dt)){
 						jobInstanceService.add(childJob.getId(), dt,triggerWay);
+						CommonJobEntry.execute(childJob,scheBasicInfoService.getScheInfo(relyJob.getJobId()), dt);
 					}
-					CommonJobEntry.execute(childJob,scheBasicInfoService.getScheInfo(relyJob.getJobId()), dt);
+					else{
+						String jobState = jobInstanceService.getJobInst(childJob.getId(), dt).getState();
+						if(!jobState.equals(JobStateConst.QUEUE)){
+							while(!jobState.equals(JobStateConst.SUCCESS)){
+								ThreadUtils.sleeep(10*1000);
+								jobState = jobInstanceService.getJobInst(childJob.getId(), dt).getState();
+							}
+						}
+					}
+					
 				}
 			}
 			
