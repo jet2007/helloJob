@@ -10,7 +10,7 @@ var jobLogMvc = {
 							{
 								url : path + "/jobLog/grid.do",
 								queryParams : param,
-								fit : false,
+								fit : true,
 								striped : false,
 								pagination : true,
 								singleSelect : true,
@@ -30,6 +30,18 @@ var jobLogMvc = {
 												if (row.jobImg)
 													return eval('('
 															+ row.jobImg + ')').id;
+											}
+										},
+										{
+											field : 'job_group',
+											title : '作业分组',
+											width : 200,
+											formatter : function(value, row,
+													index) {
+												if (row.jobImg)
+													return eval('('
+															+ row.jobImg + ')').jobGroup;
+												return row.name;
 											}
 										},
 										{
@@ -78,8 +90,8 @@ var jobLogMvc = {
 											sortable : true
 										}, {
 											field : 'dt',
-											title : 'dt',
-											width : 70,
+											title : '运行日期',
+											width : 130,
 											sortable : true
 										} ] ],
 								onLoadSuccess : function(data) {
@@ -144,19 +156,64 @@ var jobLogMvc = {
 		},
 		runOnce : function() {
 			var row = jobLogMvc.Service.getSelectRow();
-			$("#runOnceDt").datebox("setValue", row.dt + "");
+			
+			$("#runOnceDt").datetimebox("setValue", row.dt );
 			$("#runOnceDlg").openDialog(
 					function() {
 						var param = {};
 						param.jobId = row.jobId;
-						param.dt = $("#runOnceDt").datebox("getValue");
+						param.dt = $("#runOnceDt").datetimebox("getValue");
 						param.isSelfRely = $("#runOnceIsSelfRely").combobox("getValue");
+						param.runOnceWay = $("#runOnceWay").combobox("getValue");
 						easyUtils.post(path + "/sche/runOnce.do", param,
 								function(obj) {
 									jobLogDg.datagrid("reload");
 								});
 					});
-		},
+		}
+		
+		,
+		seeJobTreeJobInst : function() {
+			var row = jobLogMvc.Service.getSelectRow();
+			var param = {};
+			param.jobId = row.jobId;
+			param.dt = row.dt;
+			easyUtils.post(path + "/scheRelyJob/getTreeListJobInst?", param, function(obj) {
+				$('#jobTree').tree(
+						{
+							data : obj,
+							parentField : 'pid',
+							lines : true,
+							checkbox : false,
+							onClick : function(node) {
+								$("#jobTree .tree-title").each(
+										function(index, dom) {
+											if (node.text == $(this).html()) {
+												$(this).parent().addClass(
+														"tree-node-selected");
+											} else {
+												$(this).parent().removeClass(
+														"tree-node-selected");
+											}
+										});
+							},
+							onLoadSuccess : function(node, data) {
+								$("#jobTreeDlg").show().dialog({
+									top : 30,
+									buttons : [ {
+										text : '关闭',
+										handler : function() {
+											$("#jobTreeDlg").dialog("close");
+										}
+									} ]
+								}).dialog("open");
+							},
+							animate : true
+						});
+			});
+		}
+		
+		,
 		seeJobTree : function() {
 			var row = jobLogMvc.Service.getSelectRow();
 			easyUtils.post(path + "/scheRelyJob/getTreeList?", {jobId : row.jobId}, function(obj) {
@@ -192,9 +249,9 @@ var jobLogMvc = {
 							animate : true
 						});
 			});
-		}
-	}
-	,Service : {
+		},
+		
+	},Service : {
 		getJobLogParam : function() {
 			var param =	easyuiUtils.getParam("jobLogForm");
 			return param;

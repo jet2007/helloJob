@@ -7,7 +7,7 @@ public class JobLogVto {
 	private String id;
 	private Long jobId;
 	private String jobState;
-	private Integer dt;
+	private String dt;
 	private String beginTime;
 	private String endTime;
 	private String jobImg;

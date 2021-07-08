@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 import com.helloJob.commons.base.BaseController;
 import com.helloJob.commons.result.PageInfo;
 import com.helloJob.commons.result.Result;
+import com.helloJob.commons.utils.StringUtils;
 import com.helloJob.constant.JobStateConst;
 import com.helloJob.model.job.JobLog;
 import com.helloJob.service.job.JobInstanceService;
@@ -37,13 +38,24 @@ public class JobLogController extends BaseController{
 	@RequestMapping("/grid")
 	public Object grid(Integer page, Integer rows, 
             @RequestParam(value = "sort", defaultValue = "create_time") String sort, 
-            @RequestParam(value = "order", defaultValue = "DESC") String order,Long jobId,Long dt,String jobState){
+            @RequestParam(value = "order", defaultValue = "DESC") String order
+            ,Long jobId,String dt,String jobState,String jobName,String jobGroup){
 		if("".equals(jobState)) jobState =null;
 		PageInfo pageInfo = new PageInfo(page, rows, sort, order);
 		Map<String,Object> condition = Maps.newHashMap();
+		
+		Long loginUserId = getShiroUser().getId();
+		condition.put("loginUserId", loginUserId);
+		
 		condition.put("jobId", jobId);
-		condition.put("dt", dt);
-		condition.put("jobState", jobState);
+		if(StringUtils.isNotBlank(dt))
+			condition.put("dt", dt);
+		if(StringUtils.isNotBlank(jobState))
+			condition.put("jobState", jobState);
+		if(StringUtils.isNotBlank(jobName))
+			condition.put("jobName", jobName);
+		if(StringUtils.isNotBlank(jobGroup))
+			condition.put("jobGroup", jobGroup);
 		pageInfo.setCondition(condition);
 		jobLogService.grid(pageInfo);
 		return pageInfo;
@@ -72,7 +84,7 @@ public class JobLogController extends BaseController{
 				String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+":"+getStaffName()+"将该作业设为成功！</div><br>";
 				jobLog.setLog(firstLineLog+jobLog.getLog());
 				jobLogService.updateSuccess(jobLog);
-				jobInstanceService.add(jobLog.getJobId(), jobLog.getDt());
+				//jobInstanceService.up(jobLog.getJobId(), jobLog.getDt());
 				return renderSuccess();
 			}else {
 				return renderError("该作业尚未结束！");
@@ -111,7 +123,7 @@ public class JobLogController extends BaseController{
 	 * **/
 	@RequestMapping("/getJobState")
 	@ResponseBody
-	Object getJobState(@RequestParam Long jobId,@RequestParam Integer dt) {
+	Object getJobState(@RequestParam Long jobId,@RequestParam String dt) {
 		String jobState =  jobLogService.getJobState(jobId, dt);
 		if(jobState != null) {
 			return renderSuccess(jobState);

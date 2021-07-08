@@ -3,15 +3,50 @@
 <mapper namespace="com.helloJob.mapper.job.JobBasicInfoMapper">
 
   <select id="getJobInfoList" resultType="map" >
-SELECT t1.id,t1.job_name as jobName,t1.command, t1.ip,t1.job_user jobUser,t1.passwd,t1.`create_time`  AS createTime,t1.`sche_type`,t2.name AS jobType,t3.`name` AS creater,
-t4.`sche_type` AS scheType, t4.`begin_time` beginTime,t4.`end_time` endTime,t4.cron,t4.receiver,t4.`is_self_rely` isSelfRely,t4.pid 
-,t4.try_count,t4.try_interval
-  FROM job_basic_info t1 
-LEFT JOIN job_type t2 ON t1.`job_type`=t2.`id`
-LEFT JOIN `user` t3 ON t1.`creater`=t3.`id`
-LEFT JOIN (SELECT tm.*,GROUP_CONCAT(CAST(tn.pid  AS char)SEPARATOR ",")  pid FROM sche_basic_info tm LEFT JOIN sche_rely_job tn ON tm.job_id=tn.job_id GROUP BY tm.job_id) t4 ON t1.id = t4.`job_id`
- 
-   WHERE 1=1
+SELECT t1.id,
+       t1.job_group      AS jobGroup,
+       t1.job_name       AS jobName,
+       t1.command,
+       t1.`create_time`  AS createTime,
+       t1.`sche_type`,
+       t2.name           AS jobType,
+       t3.`name`         AS creater,
+       t4.`sche_type`    AS scheType,
+       t4.`begin_time`   beginTime,
+       t4.`end_time`     endTime,
+       t4.cron,
+       t4.receiver,
+       t4.`is_self_rely` isSelfRely,
+       t4.pid,
+       t4.try_count,
+       t4.try_interval,
+       concat(t5.protocol,'(',t5.host,',',COALESCE(t5.username,''),')') AS host,
+       t5.username       jobUser
+FROM   job_basic_info t1
+       LEFT JOIN job_type t2
+         ON t1.`job_type` = t2.`id`
+       LEFT JOIN `user` t3
+         ON t1.`creater` = t3.`id`
+       LEFT JOIN (            
+                    SELECT T40.*,T41.pid
+                      FROM sche_basic_info T40 
+                      JOIN (
+                        SELECT tm.job_id,GROUP_CONCAT(CAST(tn.pid  AS CHAR)SEPARATOR ",")  pid
+                          FROM   sche_basic_info tm
+                                 LEFT JOIN sche_rely_job tn
+                                   ON tm.job_id = tn.job_id
+                          GROUP  BY tm.job_id  ) T41 
+                        ON T40.job_id  = T41.job_id
+                  ) t4
+         ON t1.id = t4.`job_id`
+       LEFT JOIN host_info t5
+         ON t1.`host_id` = t5.id
+       LEFT JOIN (SELECT distinct job_id
+                  FROM   `job_owner`
+                  WHERE  user_id = #{loginUserId} ) t6
+         ON t1.id = t6.job_id 
+WHERE  1 = 1
+       AND ( t1.creater = #{loginUserId}  OR t6.job_id IS NOT NULL ) 
     <if test=" jobId != null "> <![CDATA[  
     	and t1.id= #{jobId}
      ]]></if>
@@ -21,14 +56,16 @@ LEFT JOIN (SELECT tm.*,GROUP_CONCAT(CAST(tn.pid  AS char)SEPARATOR ",")  pid FRO
       <if test=" creater != null  "> <![CDATA[  
     	and t1.creater = #{creater}
      ]]></if>
-
-  
-  
+     <if test=" jobGroup != null  and jobGroup != '' "> <![CDATA[  
+    	and t1.job_group like CONCAT('%',#{jobGroup},'%' )
+     ]]></if>
+     
+     
     </select>
     
     <select id="getPreJobList" resultType="com.helloJob.model.job.JobBasicInfo">
     	
-    	  SELECT id,job_name jobName,command FROM job_basic_info where id != #{jobId}
+    	  SELECT id,job_group jobGroup,job_name jobName,command FROM job_basic_info where id != #{jobId}
     	    <if test=" jobInfo != null ">
               <![CDATA[    and  (job_name  like  CONCAT('%',#{jobInfo},'%' )  or id = #{jobInfo}  )    ]]>
             </if>
@@ -37,4 +74,5 @@ LEFT JOIN (SELECT tm.*,GROUP_CONCAT(CAST(tn.pid  AS char)SEPARATOR ",")  pid FRO
     <select id="getHasJobUserList" resultType="com.helloJob.vto.ComboboxVto">
     	SELECT DISTINCT t2.id,t2.name `text` FROM job_basic_info t1,`user` t2 WHERE t1.`creater`=t2.`id`
     </select>
+    
 </mapper>

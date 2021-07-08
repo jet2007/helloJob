@@ -49,15 +49,19 @@ table.pgTable td.tdTitle{
 </style>
 </head>
 <body>
-<div style="margin:5px auto" id="jobForm">
-	&nbsp;&nbsp;编号<input class="easyui-numberbox" style="width:100px" name="jobId">
-	&nbsp;&nbsp;名称<input class="easyui-textbox" style="width:100px" name="jobName">
-	&nbsp;&nbsp;创建人<select class="easyui-combobox" name="creater" data-options="panelHeight:'auto',valueField:'id',textField:'text',url:' ${staticPath}/job/getHasJobUserList' "     style="width:120px"></select>
-	
-	 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="jobMvc.Controller.searchJob()" style="width:80px">查询</a>	
-	 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="jobMvc.Controller.cleanParam()" style="width:80px">清空</a>
-	
-</div>
+
+<div class="easyui-layout" data-options="fit:true,border:false">
+	 <div data-options="region:'north',border:false" style=";height: 40px; line-height:40px;overflow: hidden;background-color: #fff">
+		<div id="jobForm">
+		&nbsp;&nbsp;编号<input class="easyui-numberbox" style="width:100px" name="jobId">
+		&nbsp;&nbsp;分组<input class="easyui-textbox" style="width:100px" name="jobGroup">
+		&nbsp;&nbsp;名称<input class="easyui-textbox" style="width:100px" name="jobName">
+		&nbsp;&nbsp;创建人<select class="easyui-combobox" name="creater" data-options="panelHeight:'auto',valueField:'id',textField:'text',url:' ${staticPath}/job/getHasJobUserList' "     style="width:120px"></select>
+		
+		 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="jobMvc.Controller.searchJob()" style="width:80px">查询</a>	
+		 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="jobMvc.Controller.cleanParam()" style="width:80px">清空</a>
+		</div>
+	</div>
  <div id="tb">
  	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobMvc.Controller.seeJob()">查看详细</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="jobMvc.Controller.addJob()">添加</a>
@@ -68,36 +72,63 @@ table.pgTable td.tdTitle{
 	<a href="#" class="easyui-linkbutton" iconCls="icon-no" plain="true" onclick="jobMvc.Controller.stopSchedule()">停用调度</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobMvc.Controller.runOnce()">手工执行</a>
 </div>
- <table id="jobDg" style="height:660px"
-            toolbar="#tb">
- </table>
 
-
-<div id="addJob" title="添加作业"  closed="true" class="easyui-dialog" style="width:800px;height:‘auto''"  data-options="closed:'true' ">
+<div data-options="region:'center',border:true" >
+	 <table id="jobDg" 
+	            toolbar="#tb">
+	 </table>
+</div>
+<div id="addJob" title="添加作业"  closed="true" class="easyui-dialog" style="width:750px;height:‘auto''"  data-options="closed:'true' ">
 	<form class="">
 		 <ul>
+		 <li>
+			  	<div>作业分组&nbsp;  <input data-options="required:true" class="easyui-textbox" name="jobGroup" style="width:250px" ></div>
+			  </li>
+			  
 			  <li>
-			  	<div>作业名称  <input data-options="required:true" class="easyui-textbox" name="jobName" style="width:250px" ></div>
+			  	<div>作业名称&nbsp;  <input data-options="required:true" class="easyui-textbox" name="jobName" style="width:250px" ></div>
 			  </li>
 			  <li>
-			  	作业类型
+			  	业务类型&nbsp;
 			  	<input id="jobType"  name="jobType" class="easyui-combobox"  style="width:150px"
    			 data-options="panelWidth:150,valueField:'id',textField:'name',url:'${path}/jobType/combobox',required:true">
 			  </li>
-			  <li>
-				  	<div class="cmd" >
-				  	 	执行命令	  <input class="easyui-textbox" label="hive sql"  name="command" multiline="true" prompt="请输入要执行的命令" style="width:700px;height:120px">
-				  	</div>
-			  </li>
+
 			 <li id="">
-		    ip
+			 执行主机&nbsp;<select class="easyui-combogrid hostId"  name="hostId" data-options="required:true,panelHeight:'auto',idField:'id',textField:'host',url:' ${staticPath}/host/getAllList' 
+			  ,panelWidth:270
+			   ,columns: [[
+                        {field:'protocol',title:'协议',width:60},
+                        {field:'username',title:'用户名',width:80},
+                        {field:'host',title:'ip',width:120},
+                    ]],"  
+			    style="width:150px"></select>
+		 <!--    ip
     	  	<input name="ip" type="text" class="easyui-textbox"  prompt="请输入作业部署机器的ip"  required />
     	  	  &nbsp;&nbsp;账号
     	  	<input name="jobUser" type="text" class="easyui-textbox"   prompt="请输入作业执行用户的账号"   required>
     	  &nbsp;&nbsp;密码
-    	  	<input name="passwd" type="text" class="easyui-textbox"   prompt="请输入作业执行用户的密码" required />
+    	  	<input name="passwd" type="text" class="easyui-textbox"   prompt="请输入作业执行用户的密码" required /> -->
 		  </li>
-			  <li><span style="margin-left:25px;margin-right:5px">备注</span><input name="remark" class="easyui-textbox" style="width:600px" ></li>
+		   <li id="">
+			 <span style="margin-left:12px;margin-right:5px">责任人</span><select class="easyui-combogrid ownerIds" name="ownerIds" data-options="required:true,multiple:true,panelHeight:'auto',idField:'id',textField:'name'
+			  ,url:' ${staticPath}/user/getOtherUsers' 
+			  ,panelWidth:350
+			   ,columns: [[
+                        {field:'name',title:'用户名',width:120},
+                        {field:'email',title:'email',width:210},
+                    ]],"  
+			    style="width:350px"></select>
+			  <!--   <span style="">作业执行失败时，第一责任人（创建人），第二责任人是直接收件人。第三之后责任人是抄送</span> -->
+		  </li>
+		<li><span style="margin-left:25px;margin-right:5px">备注</span><input name="remark" class="easyui-textbox" style="width:600px" ></li>
+		
+		      <li>
+				  	<div class="cmd" >
+				  	 	执行命令	  <input class="easyui-textbox" label="hive sql"  name="command" multiline="true" prompt="请输入要执行的命令" style="width:700px;height:240px">
+				  	</div>
+			  </li>
+		
 		 </ul>
 	</form>
 </div>
@@ -105,11 +136,11 @@ table.pgTable td.tdTitle{
 	<div style="margin:5px 0 0 5px">
 		<div>
 			开始时间
-    	  	<input name="beginTime" type="text" class="easyui-datebox"   />
+    	  	<input name="beginTime" type="text" class="easyui-datetimebox"   />
 		</div>
 		<div style="margin:5px 0">
 			结束时间
-    	  	<input name="endTime" type="text" class="easyui-datebox" />
+    	  	<input name="endTime" type="text" class="easyui-datetimebox" />
 		</div>
 		<div>自依赖
 		  		<select name="isSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60" required>
@@ -122,12 +153,12 @@ table.pgTable td.tdTitle{
 		</div>
 		<div>失败重试间隔(分钟)<input name="tryInterval"  class="easyui-numberbox" min="1"  value="5" style="width:100"></div>
 		<div  style="margin:5px 0">邮件告警
-		<select name="receiver" class="easyui-combogrid" name="dept" style="width:280px;"
+		<select name="receiver" class="easyui-combogrid"  style="width:280px;"
         data-options="
-         	multiple:true,
+         	multiple:true,	
             panelWidth:330,
             panelHeight:'auto', 
-            idField:'email',
+            idField:'id',
             textField:'name',
             url:'${path}/user/getAllUserList',
             columns:[[
@@ -149,11 +180,13 @@ table.pgTable td.tdTitle{
 		<span>
 			<span id="timeSche" style="display:none">
 				<input class="easyui-textbox" name="cron"  prompt="请输入cron表达式" style="width:150px" required>
+				,周期：<input class="easyui-textbox" name="period"  prompt="YYYYMMDD" style="width:150px" required>
 				<div style="color:grey" >
 					<div>每天6点执行：0 0 6 * * ?</div>
 					<div>每周五6点执行： 0 0 6 ? * FRI</div>
 					<div>每月的第一天6点执行： 0 0 6 1 * ?</div>
 					<div>每30s执行一次：0/30 * * * * ?</div>
+					<div>周期：YYYYMMDDHHMISS,YYYYMMDDHHMI,YYYYMMDDHH,YYYYMMDD,YYYYMM,YYYY</div>
 				</div>
 			</span>
 			<span id="relyPreJob" >
@@ -189,6 +222,7 @@ table.pgTable td.tdTitle{
 			<thead>
 					<tr>
 					<th data-options="field:'id',width:50">编号</th>
+						<th data-options="field:'jobGroup',width:260">分组</th>
 						<th data-options="field:'jobName',width:260">名称</th>
 						<th data-options="field:'delete',width:90,formatter:function(value,row,index){return '<a class=easyui-linkbutton-del>删除</a>'}">操作</th>
 					</tr>
@@ -209,6 +243,7 @@ table.pgTable td.tdTitle{
 				<thead>
 					<tr>
 						<th data-options="field:'id',width:50">编号</th>
+						<th data-options="field:'jobGroup',width:260">分组</th>
 						<th data-options="field:'jobName',width:260">名称</th>	
 						<th data-options="field:'add',width:90,formatter:function(value,row,index){return '<a class=easyui-linkbutton-add>添加</a>'}"">操作</th>
 					</tr>
@@ -217,14 +252,21 @@ table.pgTable td.tdTitle{
 		</div>
 	</div>
 </div>
-<div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:300px;height:250px;padding:10px"
+<div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:600px;height:250px;padding:10px"
 	 data-options="closed:'true' ">
-	<div>选择dt<input id="runOnceDt"  class="easyui-datebox" /></div>
-	<div style="margin-top:10px">自依赖
+	<div>运行日期<input id="runOnceDt"  class="easyui-datetimebox" /></div>
+	<div style="margin-top:10px">自依赖&nbsp;&nbsp;
 			  		<select id="runOnceIsSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60">
 			  			<option>否</option>
 			  			<option>是</option>
 			  		</select>
+		</div>
+		<div style="margin-top:10px">方式&nbsp;&nbsp;&nbsp;&nbsp;
+				  		<select id="runOnceWay" class="easyui-combobox" data-options="panelHeight:'auto',width:400">
+				  			<option value="13">启动作业(不依赖上游作业)</option>
+				  			<option value="12">启动作业(依赖上游作业)</option>
+				  			<option value="11">启动作业及下游依赖作业(依赖上游作业且强制kill下游依赖作业)</option>
+				  		</select>
 		</div>
 </div>
 <div id="jobTreeDlg" class="easyui-dialog" title="查看作业树" style="display:none;width:500px;height:600px;padding:10px"
@@ -235,14 +277,19 @@ table.pgTable td.tdTitle{
 	 data-options="closed:'true' ">
 		<div id="seeJobContent"></div>
 </div>
+</div>
 <script type="text/juicer" id="seeJobTpl">  
 	<ul>
 		<li>作业编号：{{job.id}}</li>
+		<li>作业分组：{{job.jobGroup}}</li>
 		<li>作业名称：{{job.jobName}}</li>
-		<li>作业类型：{{job.jobType}}</li>
-		<li>部署信息 ip:{{job.ip}}   账号:{{job.jobUser}}  密码:{{job.passwd}}</li>
+		<li>业务类型：{{jobTypeName}}</li>
+		<li>部署信息 主机:{{hostInfo.host}}   账号:{{hostInfo.username}}  </li>
 		<li>
 			执行命令：{{job.command}}
+		</li>
+		<li>
+			责任人：{{ownerNames}}
 		</li>
 		<li>
 			{@if scheBasicInfo != null }

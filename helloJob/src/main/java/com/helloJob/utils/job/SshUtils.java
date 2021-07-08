@@ -8,9 +8,14 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.helloJob.commons.utils.StringUtils;
+import com.helloJob.model.job.HostInfo;
 import com.helloJob.model.job.JobBasicInfo;
 import com.helloJob.model.job.JobLog;
+import com.helloJob.model.job.JobType;
+import com.helloJob.service.job.HostInfoService;
 import com.helloJob.service.job.JobLogService;
+import com.helloJob.service.job.JobTypeService;
 import com.helloJob.utils.ApplicationContextUtil;
 import com.helloJob.vto.JobExecResult;
 import com.helloJob.vto.RunningJobInfo;
@@ -18,24 +23,45 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
-import cn.hutool.core.util.StrUtil;
 
 public class SshUtils {
 	protected static Logger logger = LogManager.getLogger(SshUtils.class);
 
-	public static JobExecResult execute(JobBasicInfo job, Integer dt) {
+	public static JobExecResult execute(JobBasicInfo job, String dt) {
 		JobLogService jobLogService = ApplicationContextUtil.getContext().getBean(JobLogService.class);
+		HostInfoService hostInfoService = ApplicationContextUtil.getContext().getBean(HostInfoService.class);
+		JobTypeService jobTypeService = ApplicationContextUtil.getContext().getBean(JobTypeService.class);
 		JobLog jobLog = jobLogService.addRunningLog(job.getId(), dt, job);
 		JobExecResult jobExecResult = new JobExecResult();
 		try {
-			String host = job.getIp();// 服务器地址
-			String userName = job.getJobUser();// 用户名
-			String password = job.getPasswd();// 密码
-			int port = 22;// 端口号
+			HostInfo hostInfo = hostInfoService.get(job.getHostId());
+			String host = hostInfo.getHost();// 服务器地址
+			String userName = hostInfo.getUsername();// 用户名
+			String password = hostInfo.getPasswd();// 密码
+			int port = hostInfo.getPort();// 端口号
+			
+			//获取Job类型
+			JobType jobType = jobTypeService.get(job.getJobType());
+			
 			JSch jsch = new JSch(); // 创建JSch对象
 			// String cmd = "hive -e \"select id,count(1) from stu group by id\"";// 要运行的命令
-			String cmd = StrUtil.replaceChars(job.getCommand(), "\r\n", "");
-			logger.info("执行命令:" + cmd);
+			//String cmd = StrUtil.replaceChars(job.getCommand(), "\r\n", "");
+			String jobCmd = job.getCommand();
+			String jobTypeCmd=jobType.getCmd();
+			String cmd;
+			// 增加使用jobtype的cmd列，来自定义命令
+			// jobTypeCmd示例    hive -e "%s" --> 实现执行hive命令
+			if(StringUtils.isNotBlank(jobTypeCmd) && jobTypeCmd.contains("${command}")){
+				cmd=jobTypeCmd.replace("${command}", jobCmd);
+			}
+			else{
+				cmd=jobCmd;
+			}
+			
+			//logger.info(String.format("执行命令:jobtype=[%s]\ncmd-detail=[%s]",jobType.getName(),cmd));
+			
+			logger.info(String.format("执行命令:jobtype=[%s]\njobid=[%s]",jobType.getName(),job.getId()));
+			
 			Session session = jsch.getSession(userName, host, port);
 			// 根据用户名，主机ip，端口获取一个Session对象
 			session.setPassword(password); // 设置密码

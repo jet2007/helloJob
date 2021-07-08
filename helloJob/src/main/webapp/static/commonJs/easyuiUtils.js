@@ -58,6 +58,17 @@ var easyuiUtils = {
 				easyuiUtils.validateParam(param,name,options);
 			}
 		});
+		
+		//获取easyui-datetimebox
+		$("#"+domId+" .easyui-datetimebox").each(function(index,dom){
+			if($(this).next().is(":visible")){
+				var name = $(this).attr("textboxname"); 
+				var options = $(this).datetimebox("options");
+				param[name] =  $(this).datetimebox("getValue");
+				easyuiUtils.validateParam(param,name,options);
+			}
+		});
+		
 		//easyui-numberbox
 		$("#"+domId+" .easyui-numberbox").each(function(index,dom){
 			if($(this).next().is(":visible")){
@@ -78,13 +89,18 @@ var easyuiUtils = {
 	}
 	,clearParam:function(domId){
 		$("#"+domId+" .easyui-textbox").each(function(index,dom){
-			$(this).textbox("clear");
+			var $this = $(this);
+			$this.textbox("clear");
+			var defaultValue = $this.attr("defaultvalue");
+			if(defaultValue)	$this.textbox("setValue",defaultValue);
 		});
-		$("#"+domId+" .easyui-datebox").each(function(index,dom){
+		$("#"+domId+" .easyui-datetimebox").each(function(index,dom){
 			$(this).datebox("clear");
 		});
 		$("#"+domId+" .easyui-numberbox").each(function(index,dom){
 			$(this).numberbox("clear");
+			var defaultValue = $(this).attr("defaultvalue");
+			if(defaultValue)	$(this).numberbox("setValue",defaultValue);
 		});
 		$("#"+domId+" .easyui-combobox").each(function(index,dom){
 			$(this).combobox("clear");
@@ -113,7 +129,15 @@ var easyuiUtils = {
 				if(value)$(this).combobox("setValue",value);
 			}
 		});
-		$("#"+domId+" .easyui-datebox").each(function(index,dom){
+		/*$("#"+domId+" .easyui-combogrid").each(function(index,dom){
+			if($(this).next().is(":visible")){
+				var name = $(this).attr("textboxname"); 
+				var value = data[name];
+				if(value)$(this).combogrid("setValue",value);
+			}
+		});*/
+		
+		$("#"+domId+" .easyui-datetimebox").each(function(index,dom){
 			var name = $(this).attr("textboxname"); 
 			if($(this).next().is(":visible")){
 				var value = data[name];

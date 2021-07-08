@@ -9,34 +9,37 @@
 <title>作业日志</title>
 </head>
 <body>
+<div class="easyui-layout" data-options="fit:true,border:false">
+ <div data-options="region:'north',border:false" style=";height: 40px; line-height:40px;overflow: hidden;background-color: #fff">
+	<div  id="jobLogForm">
+		<!--  <span>作业编号<input name="jobId"  class="easyui-numberbox"></span> -->
+		<span>作业分组<input name="jobGroup"  class="easyui-textbox"></span>
+		&nbsp;<span>作业名称<input name="jobName"  class="easyui-textbox"></span>
+	&nbsp;<span>运行日期<input name="dt"  type="text" class="easyui-datetimebox" ></span>
+		&nbsp;<span>作业状态
+			<select class="easyui-combobox" name="jobState" style="width:80px" panelHeight="auto">
+				<option value="">全部</option>
+				<option>成功</option>
+				<option>失败</option>
+				<option>执行中</option>
+			</select>
+		</span>
+		
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="jobLogMvc.Controller.searchJobLog()" style="width:80px">查询</a>
+		 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="jobLogMvc.Controller.cleanParam()" style="width:80px">清空</a>
+	</div>
+</div>
 <div id="tb">
 	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeLog()">查看日志</a>
  	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.runOnce()">手工执行</a>
- 		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.setSuccess()">设为成功</a>
-	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeJobTree()">作业树</a>
+ 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="jobLogMvc.Controller.setSuccess()">设为成功</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="jobLogMvc.Controller.seeJobTreeJobInst()">作业树</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-no" plain="true" onclick="jobLogMvc.Controller.killJob()">停止运行</a>
 </div>
-<div style="margin:8px" id="jobLogForm">
-	<span>作业id<input name="jobId"  class="easyui-numberbox"></span>
-&nbsp;&nbsp;&nbsp;<span>dt<input name="dt"  type="text" class="easyui-datebox" ></span>
-	&nbsp;<span>作业状态
-		<select class="easyui-combobox" name="jobState" style="width:80px" panelHeight="auto">
-			<option value="">全部</option>
-			<option>成功</option>
-			<option>失败</option>
-			<option>执行中</option>
-		</select>
-	</span>
-	
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onClick="jobLogMvc.Controller.searchJobLog()" style="width:80px">查询</a>
-	 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onClick="jobLogMvc.Controller.cleanParam()" style="width:80px">清空</a>
-	
+ <div data-options="region:'center',border:true" >
+	 <table  id="jobLogDg"  toolbar="#tb">
+	</table>
 </div>
-
-
- <table  id="jobLogDg" style="height:630px"
-            singleSelect="true" fitColumns="true"  toolbar="#tb">
-</table>
 <div id="seeLogDlg" class="easyui-dialog" title="查看日志" style="display:none;width:1100px;height:500px;padding:10px"
 	 data-options="closed:'true' ">
 	 <div id="logDiv"></div>
@@ -45,15 +48,24 @@
 	 data-options="closed:'true' ">
 		<ul id="jobTree" class="ztree"></ul>
 </div>
-<div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:300px;height:250px;padding:10px"
+<div  id="runOnceDlg"  class="easyui-dialog" title="手工执行一次" style="width:600px;height:250px;padding:10px"
 	 data-options="closed:'true' ">
-	<div>选择dt<input id="runOnceDt"  class="easyui-datebox" /></div>
-	<div style="margin-top:10px">自依赖
+	<div>运行日期<input id="runOnceDt"  class="easyui-datetimebox"   /></div>
+	<div style="margin-top:10px">自依赖&nbsp;&nbsp;
 			  		<select id="runOnceIsSelfRely" class="easyui-combobox" data-options="panelHeight:'auto',width:60">
 			  			<option>否</option>
 			  			<option>是</option>
 			  		</select>
-		</div>
+	</div>
+	<div style="margin-top:10px">方式&nbsp;&nbsp;&nbsp;&nbsp;
+			  		<select id="runOnceWay" class="easyui-combobox" data-options="panelHeight:'auto',width:400">
+				  		<option value="13">启动作业(不依赖上游作业)</option>
+				  		<option value="12">启动作业(依赖上游作业)</option>
+				  		<option value="11">启动作业及下游依赖作业(依赖上游作业且强制kill下游依赖作业)</option>
+			  		</select>
+	</div>
+	
+</div>
 </div>
 <script src="${path }/static/job/jobLog.js?_v=${_version}"></script>
 </body>

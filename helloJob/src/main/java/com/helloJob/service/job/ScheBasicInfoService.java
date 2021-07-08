@@ -10,7 +10,7 @@ public interface ScheBasicInfoService {
 
 	public void mountScheByTime(Long jobId, String cron);
 
-	public void runOnce(long jobId, Integer dt, String isSelfRely);
+	public void runOnce(long jobId, String dt, String isSelfRely);
 	
 	public ScheBasicInfo getScheInfo(Long jobId);
 	/**
@@ -29,5 +29,7 @@ public interface ScheBasicInfoService {
 	/**
 	 * 终止正在执行的作业
 	 * ***/
-	public void killJobs(Set<Long> jobIds, Integer dt,String firstLineLog);
+	public void killJobs(Set<Long> jobIds, String dt,String firstLineLog);
+	
+
 }

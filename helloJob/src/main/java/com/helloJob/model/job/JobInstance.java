@@ -24,10 +24,14 @@ public class JobInstance implements Serializable {
 	private String id;
 	@TableField(value="job_id")
 	private Long jobId;
-	private Integer dt;
+	private String dt;
 	private String createTime;
-	public void setId(Long jobId, Integer dt) {
+	public void setId(Long jobId, String dt) {
 		this.id = jobId+"_"+dt;
 	}
+	public String triggerWay = "01";
+	public String state;
+	@TableField(value="update_time")
+	public String updateTime;
 	
 }

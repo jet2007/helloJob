@@ -3,13 +3,29 @@
 <mapper namespace="com.helloJob.mapper.job.JobInstanceMapper">
 
   <select id="getRelyJobFailInstance" resultType="Long" >
-		SELECT t1.pid FROM `sche_rely_job` t1 WHERE t1.job_id=#{jobId}
-AND NOT EXISTS (SELECT 1 FROM job_instance WHERE job_id=t1.pid AND dt=#{dt})
+		SELECT DISTINCT t1.pid FROM `sche_rely_job` t1 WHERE t1.job_id=#{jobId}
+AND NOT EXISTS (SELECT 1 FROM job_instance WHERE job_id=t1.pid AND dt=#{dt} AND state='成功' )
     </select>
+    
+      <select id="getTriggerWay" resultType="String" >
+		SELECT trigger_way from job_instance where dt=#{dt} and job_id =#{jobId}  
+    </select>
+    
     <delete id="delete" parameterType="java.lang.Long">
     		delete from job_instance  where dt = #{dt} and job_id in 
   <foreach collection="jobIds" index="index" item="jobId" open="(" separator="," close=")">  
             #{jobId}  
         </foreach>
     </delete>
+    
+    <update id="setTriggerWay">
+    update job_instance set trigger_way=#{triggerWay}
+    where dt=#{dt}  and job_id =#{jobId}  
+    </update>
+    
+    <update id="setUpdateTime">
+    update job_instance set update_time = NOW()
+    where dt=#{dt}  and job_id =#{jobId}  
+    </update>
+    
 </mapper>

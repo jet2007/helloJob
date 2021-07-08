@@ -64,6 +64,16 @@ public class ScheRelyJobServiceImpl  extends ServiceImpl< ScheRelyJobMapper,  Sc
 		List<Tree> treeList = scheRelyJobMapper.getTreeList(referJobIds );
 		return treeList;
 	}
+	
+	
+	@Override
+	public List<Tree> getTreeListJobInst(Long jobId, String dt) {
+		Set<Long> referJobIds = getReferJobIds(jobId);
+		List<Tree> treeList = scheRelyJobMapper.getTreeListJobInst(referJobIds,dt );
+		return treeList;
+	}
+	
+	
 	@Override
 	public List<Long> getTriggerJobs(Long jobId) {
 		return scheRelyJobMapper.getTriggerJobs(jobId);

@@ -40,7 +40,7 @@ public class ScheBasicInfoServiceImpl  extends ServiceImpl< ScheBasicInfoMapper,
 		QuartzManager.addJob(jobId+"", cron);
 	}
 	@Override
-	public void runOnce(long jobId, Integer dt, String isSelfRely) {
+	public void runOnce(long jobId, String dt, String isSelfRely) {
 		JobBasicInfo job = JobBasicInfoService.get( jobId);
 		ScheBasicInfo scheInfo =new ScheBasicInfo();
 		scheInfo.setIsSelfRely(isSelfRely);
@@ -69,13 +69,15 @@ public class ScheBasicInfoServiceImpl  extends ServiceImpl< ScheBasicInfoMapper,
 	}
 	@Override
 	public List<ScheBasicInfo> getScheByTime() {
-		ScheBasicInfo scheBasicInfo = new ScheBasicInfo();
-		scheBasicInfo.setScheType(ScheTypeConst.TIME_SCHE);
-		Wrapper<ScheBasicInfo> wrapper = new EntityWrapper<>(scheBasicInfo);
+		Wrapper<ScheBasicInfo> wrapper = new EntityWrapper<>();
+		wrapper.where("sche_type = {0}", ScheTypeConst.TIME_SCHE);
+//		ScheBasicInfo scheBasicInfo = new ScheBasicInfo();
+//		scheBasicInfo.setScheType(ScheTypeConst.TIME_SCHE);
+//		Wrapper<ScheBasicInfo> wrapper = new EntityWrapper<>(scheBasicInfo);
 		return scheBasicInfoMapper.selectList(wrapper);
 	}
 	@Override
-	public void killJobs(Set<Long> jobIds, Integer dt,String firstLineLog) {
+	public void killJobs(Set<Long> jobIds, String dt,String firstLineLog) {
 		List<String> jobLogIds = jobLogService.getRunningJobLogIds(jobIds, dt);
 		for(String jobLogId : jobLogIds) {
 			RunningJobInfo runningJobInfo = RunningJobUtils.get(jobLogId);
@@ -86,4 +88,6 @@ public class ScheBasicInfoServiceImpl  extends ServiceImpl< ScheBasicInfoMapper,
 			}
 		}
 	}
+
+	
 }

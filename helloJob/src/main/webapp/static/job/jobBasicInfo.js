@@ -27,6 +27,8 @@ var jobMvc = {
 			,addJob:function(){
 				$("#addJob").openDialog(function(){
 					var param = jobMvc.Service.getAddJobParam();
+					console.log(param);
+					//return;
 					easyUtils.post(path+"/job/add",param,function(obj){
 						jobDg.datagrid("reload");
 					});
@@ -51,6 +53,9 @@ var jobMvc = {
 				    });
 					easyuiUtils.clearParam("addJob",obj);
 					easyuiUtils.fillParam("addJob",obj.job);
+					$("#addJob .hostId").combogrid("setValue",obj.hostInfo);
+					$("#addJob .ownerIds").combogrid("setValues",obj.ownerIds);
+					//easyuiUtils.fillParam("addJob",obj.owners);
 				});
 			}
 			/**
@@ -69,6 +74,9 @@ var jobMvc = {
 					});
 				});
 			}
+			/**
+			 * 挂载调度
+			 */
 			,scheduleJob:function(){
 				var selectRow = jobDg.getSelectRow();
 				if(selectRow.scheType){
@@ -111,8 +119,9 @@ var jobMvc = {
 				$("#runOnceDlg").openDialog(function(){
 					var param = {};
 					param.jobId = jobId;
-					param.dt = $("#runOnceDt").val();
+					param.dt = $("#runOnceDt").datetimebox("getValue");
 					param.isSelfRely= $("#runOnceIsSelfRely").combobox("getValue");
+					param.runOnceWay = $("#runOnceWay").combobox("getValue");
 					easyUtils.post(path+"/sche/runOnce",param,function(obj){
 						$.messager.alert("成功", "操作成功！","info");  
 					});
@@ -188,14 +197,14 @@ function queryJobDg(param){
         idField : 'id',   sortName : 'id',   sortOrder : 'desc',pageSize : 20,
         columns:[[
             {field:'id',title:'编号',width:50,sortable:true,rowspan:2},
-            {field:'jobType',title:'作业类型',width:80,rowspan:2},
+            {field:'jobType',title:'业务类型',width:80,rowspan:2},
+            {field:'jobGroup',title:'分组',width:200,rowspan:2},
             {field:'jobName',title:'名称',width:200,rowspan:2},
-            {field:'ip',title:'ip',width:110,rowspan:2},
-            {field:'jobUser',title:'账号',width:70,rowspan:2},
-         /*   {field:'passwd',title:'密码',width:70,rowspan:2},*/
-            {field:'command',title:'命令',width:200,rowspan:2},
-            {field:'scheManager',title:'调度',align:'center',colspan:6},
             {field:'creater',title:'创建人',width:70,rowspan:2},
+            {field:'host',title:'主机',width:150,rowspan:2},
+            {field:'scheManager',title:'调度',align:'center',colspan:5},
+            {field:'command',title:'命令',width:200,rowspan:2},
+         /*   {field:'owner',title:'责任人',width:140,rowspan:2},*/
             {field:'createTime',title:'创建时间',width:120,rowspan:2,formatter : function(value, row, index){
             	return value.substring(0,16);
             }}
@@ -228,7 +237,6 @@ function queryJobDg(param){
             }},
             {field:'try_count',title:'重试次数',width:60},
             {field:'try_interval',title:'重试间隔',width:60},
-            {field:'receiver',title:'告警邮箱',width:150},
             {field:'isSelfRely',title:'自依赖',width:50,align:'center'}
             ]
         ],

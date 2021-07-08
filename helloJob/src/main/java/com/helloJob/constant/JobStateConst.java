@@ -5,4 +5,5 @@ public class JobStateConst {
 	public static final String ERROR  = "失败";
 	public static final String RUNNING  = "执行中";
 	public static final String WARNING = "警告";
+	public static final String QUEUE = "队列"; //待执行
 }

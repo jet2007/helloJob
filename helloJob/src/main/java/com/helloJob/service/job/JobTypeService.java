@@ -6,6 +6,8 @@ import com.helloJob.commons.result.PageInfo;
 import com.helloJob.model.job.JobType;
 
 public interface JobTypeService {
+	public String getName(Long id);
+	
 	public void add(JobType jobType);
 	
 	public void grid(PageInfo pageInfo);
@@ -13,4 +15,6 @@ public interface JobTypeService {
 	public  List<JobType>  combobox();
 
 	public void update(JobType jobType);
+	
+	public JobType get(Long id);
 }

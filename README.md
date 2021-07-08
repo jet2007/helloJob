@@ -14,11 +14,19 @@ hello job 是使用j2ee技术开发的调度系统，提供交互简单的中文
 6. 可以部署在windows 或者linux 服务器。
 
 # 系统部分截图
+<<<<<<< HEAD
+![作业管理](https://github.com/iture123/helloJob/blob/dev/helloJob/doc/job.png)
+
+![添加作业](https://github.com/iture123/helloJob/blob/dev/helloJob/doc/addJob.png)
+
+![作业日志](https://github.com/iture123/helloJob/blob/dev/helloJob/doc/jobLog.png)
+=======
 ![作业管理](https://github.com/iture123/helloJob/blob/master/helloJob/doc/job.png)
 
 ![添加作业](https://github.com/iture123/helloJob/blob/master/helloJob/doc/addJob.png)
 
 ![作业日志](https://github.com/iture123/helloJob/blob/master/helloJob/doc/jobLog.png)
+>>>>>>> remotes/origin/master
 
 # 技术栈：
 jdk1.8、spring、springmvc、mybatis、quartz、mysql

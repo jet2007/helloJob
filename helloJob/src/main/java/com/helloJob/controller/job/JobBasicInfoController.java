@@ -17,9 +17,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.helloJob.commons.base.BaseController;
 import com.helloJob.commons.result.PageInfo;
+import com.helloJob.model.admin.User;
+import com.helloJob.model.job.HostInfo;
 import com.helloJob.model.job.JobBasicInfo;
 import com.helloJob.model.job.ScheBasicInfo;
+import com.helloJob.service.job.HostInfoService;
 import com.helloJob.service.job.JobBasicInfoService;
+import com.helloJob.service.job.JobOwnerService;
+import com.helloJob.service.job.JobTypeService;
 import com.helloJob.service.job.ScheBasicInfoService;
 import com.helloJob.service.job.ScheRelyJobService;
 import com.helloJob.utils.DateUtils;
@@ -34,7 +39,12 @@ public class JobBasicInfoController  extends BaseController{
 	private ScheBasicInfoService scheBasicInfoService;
 	@Autowired
 	private ScheRelyJobService scheRelyJobService;
-	
+	@Autowired
+	private HostInfoService hostInfoService;
+	@Autowired
+	private JobOwnerService jobOwnerService;
+	@Autowired
+	private JobTypeService jobTypeService;
 	@GetMapping("/jobBasicInfo")
 	public String jobBasicInfo() {
 		return "job/jobBasicInfo";
@@ -44,13 +54,15 @@ public class JobBasicInfoController  extends BaseController{
 	 * **/
 	@ResponseBody
 	@RequestMapping("/add")
-	public Object add(JobBasicInfo job){
+	public Object add(JobBasicInfo job,@RequestParam("ownerIds[]") List<Long> ownerIds){
 		logger.info("添加作业job:"+JSON.toJSONString(job));
+		logger.info("责任人:"+JSON.toJSONString(ownerIds));
 		try {
 			job.setCommand(StringEscapeUtils.unescapeHtml(job.getCommand()));
 			job.setCreater(getUserId());
 			job.setCreateTime(DateUtils.getCreateTime());
 			jobBasicInfoService.save(job);
+			jobOwnerService.add(job.getId(), ownerIds);
 			return renderSuccess();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -64,7 +76,17 @@ public class JobBasicInfoController  extends BaseController{
 		Map<String,Object> dataMap = Maps.newHashMap();
 		dataMap.put("job", job);
 		ScheBasicInfo scheBasicInfo = scheBasicInfoService.getScheInfo(jobId);
+		HostInfo hostInfo = hostInfoService.get(job.getHostId());
+		if(hostInfo != null) hostInfo.setPasswd(null);
+		List<User> owners = jobOwnerService.getOwnerByJobId(jobId);
+		List<Long> ownerIds = jobOwnerService.getOwnerIds(owners);
+		List<String> ownerNames = jobOwnerService.getOwnerNames(owners);
+		String jobTypeName = jobTypeService.getName(job.getJobType());
 		dataMap.put("scheBasicInfo",scheBasicInfo);
+		dataMap.put("hostInfo", hostInfo);
+		dataMap.put("ownerNames", ownerNames);
+		dataMap.put("ownerIds", ownerIds);
+		dataMap.put("jobTypeName", jobTypeName);
 		return renderSuccess(dataMap);
 	}
 	@ResponseBody
@@ -72,13 +94,16 @@ public class JobBasicInfoController  extends BaseController{
 	public Object getJobInfoList(Integer page, Integer rows, 
             @RequestParam(value = "sort", defaultValue = "create_time") String sort, 
             @RequestParam(value = "order", defaultValue = "DESC") String order,
-            Long jobId,Long creater,Long jobType,String jobName){
+            Long jobId,Long creater,Long jobType,String jobName,String jobGroup){
 		PageInfo pageInfo = new PageInfo(page, rows, sort, order);
 		Map<String, Object> condition = Maps.newHashMap();
+		Long loginUserId = getShiroUser().getId();
 		condition.put("jobId", jobId);
 		condition.put("creater", creater);
 		condition.put("jobType", jobType);
 		condition.put("jobName", jobName);
+		condition.put("jobGroup", jobGroup);
+		condition.put("loginUserId", loginUserId);
 		pageInfo.setCondition(condition );
 		jobBasicInfoService.getJobInfoList(pageInfo);
 		return pageInfo;
@@ -98,6 +123,7 @@ public class JobBasicInfoController  extends BaseController{
 	@RequestMapping("delJob")
 	@ResponseBody
 	public Object delJob(@RequestParam Long jobId ) {
+		logger.info(getStaffName()+"删除作业:"+jobId);
 		try {
 			JobBasicInfo job = jobBasicInfoService.get(jobId);
 			if(job == null) {
@@ -112,24 +138,27 @@ public class JobBasicInfoController  extends BaseController{
 				throw new RuntimeException("请先停掉作业"+JSON.toJSONString(triggerJobList)+"对本作业的依赖！");
 			}
 			jobBasicInfoService.delJob(jobId);
+			jobOwnerService.deleteOwner(jobId);
 			return renderSuccess();
 		}catch(Exception e) {
 			e.printStackTrace();
 			return renderError(e.getMessage());
 		}
 	}
-@RequestMapping("update")
+	@RequestMapping("update")
 	@ResponseBody
-	public Object update(JobBasicInfo job){
+	public Object update(JobBasicInfo job,@RequestParam("ownerIds[]") List<Long> ownerIds){
 		logger.info(getStaffName()+"更新作业信息:"+JSON.toJSONString(job));
 		job.setCommand(StringEscapeUtils.unescapeHtml(job.getCommand()));
 		job.setCreater(getUserId());
 		job.setCreateTime(DateUtils.getCreateTime());
 		jobBasicInfoService.update(job);
+		jobOwnerService.update(job.getId(), ownerIds);
 		return renderSuccess();
 	}
-@RequestMapping("getHasJobUserList")
-@ResponseBody
+
+	@RequestMapping("getHasJobUserList")
+	@ResponseBody
 	public Object getHasJobUserList() {
 		List<ComboboxVto> boxList = Lists.newArrayList();
 		boxList.add(new ComboboxVto("","全部"));
@@ -137,4 +166,5 @@ public class JobBasicInfoController  extends BaseController{
 		boxList.addAll(dataList);
 		return boxList;
 	}
+	
 }

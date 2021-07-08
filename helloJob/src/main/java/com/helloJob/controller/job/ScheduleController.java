@@ -1,5 +1,6 @@
 package com.helloJob.controller.job;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +22,11 @@ import com.helloJob.service.job.ScheBasicInfoService;
 import com.helloJob.service.job.ScheRelyJobService;
 import com.helloJob.utils.DateUtils;
 import com.helloJob.utils.ThreadUtils;
-
+/**
+ * 作业调度
+ * @author iture
+ *
+ */
 @Controller
 @RequestMapping("/sche")
 public class ScheduleController extends BaseController {
@@ -98,10 +103,19 @@ public class ScheduleController extends BaseController {
 	 * ***/
 	@RequestMapping("/runOnce")
 	@ResponseBody
-	public Object runOnce(@RequestParam long jobId,@RequestParam Integer dt,@RequestParam(defaultValue="否") String isSelfRely){
+	public Object runOnce(@RequestParam long jobId,@RequestParam String dt,@RequestParam(defaultValue="否") String isSelfRely,@RequestParam String runOnceWay){
 		try {
+			// 手动作业实例，强制kill和删除作业实例
+			if(jobInstanceService.isExistsJobInst(jobId, dt)){
+				Set<Long> j=new HashSet<Long>();
+				j.add(jobId);
+				scheBasicInfoService.killJobs(j,dt,"");
+				jobInstanceService.delete(jobId, dt);
+			} 
+			jobInstanceService.add(jobId, dt, runOnceWay);
+			
 			if(StringUtils.isEmpty(dt)) {
-				dt = DateUtils.getYesterday();
+				dt =  DateUtils.getNowFormatStr000000() ;
 			}
 			if("是".equals(isSelfRely)) {
 				//判断自依赖是否ok
@@ -109,21 +123,28 @@ public class ScheduleController extends BaseController {
 					throw new RuntimeException("操作失败！作业"+jobId+"自依赖失败。dt="+dt);
 				}
 			}
-			List<Long> relyJobFailInstanceList = jobInstanceService.getRelyJobFailInstance(jobId,dt);
-			if(relyJobFailInstanceList.size() == 0) {
-				//kill掉子孙作业作业正在运行的实例
-				Set<Long> allTriggerJobs = scheRelyJobService.getAllTriggerJobs(jobId);
-				allTriggerJobs.add(jobId);
-				logger.info("将要kill掉的作业:"+allTriggerJobs);
-				String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
-				scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
-				jobInstanceService.delete(allTriggerJobs, dt);
-				scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
-				ThreadUtils.sleeep(300);
-				return renderSuccess();
-			}else {
-				throw new RuntimeException("操作失败！作业"+jobId+"依赖的作业"+ JSON.toJSONString(relyJobFailInstanceList)+"尚未成功。dt="+dt);
+			
+			//上游依赖
+			if(jobInstanceService.isRelyPrevJobsInst(jobId, dt)){
+				List<Long> relyJobFailInstanceList = jobInstanceService.getRelyJobFailInstance(jobId,dt);
+				if(relyJobFailInstanceList.size() == 0) {//上游作业没执行完成
+					if(jobInstanceService.isKillNextJobsInst(jobId, dt) ){ 
+						//kill掉下游作业正在运行的实例
+						Set<Long> allTriggerJobs = scheRelyJobService.getAllTriggerJobs(jobId);
+						allTriggerJobs.add(jobId);
+						logger.info("将要kill掉的作业:"+allTriggerJobs);
+						String firstLineLog = "<div style='color:red'>"+DateUtils.getCreateTime()+ getStaffName()+"点击运行一次作业"+jobId+"，引起其子孙作业被kill掉 !</div><br>";
+						scheBasicInfoService.killJobs(allTriggerJobs,dt,firstLineLog);
+						allTriggerJobs.remove(jobId);
+						jobInstanceService.delete(allTriggerJobs, dt);
+					}
+				}else {
+					throw new RuntimeException("操作失败！作业"+jobId+"依赖的作业"+ JSON.toJSONString(relyJobFailInstanceList)+"尚未成功。dt="+dt);
+				}
 			}
+			scheBasicInfoService.runOnce(jobId, dt,isSelfRely);
+			ThreadUtils.sleeep(300);
+			return renderSuccess();
 			
 		}catch(Exception e) {
 			e.printStackTrace();

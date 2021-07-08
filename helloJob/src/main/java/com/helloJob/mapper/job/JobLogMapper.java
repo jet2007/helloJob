@@ -19,7 +19,7 @@ public interface JobLogMapper  extends BaseMapper<JobLog>{
 
 	void updateRunningToError();
 
-	List<String> getRunningJobIds(@Param("jobIds") Set<Long> jobIds,@Param("dt") Integer dt);
+	List<String> getRunningJobIds(@Param("jobIds") Set<Long> jobIds,@Param("dt") String dt);
 
-	String getJobState(@Param("jobId") Long jobId,@Param("dt")  Integer dt);
+	String getJobState(@Param("jobId") Long jobId,@Param("dt")  String dt);
 }

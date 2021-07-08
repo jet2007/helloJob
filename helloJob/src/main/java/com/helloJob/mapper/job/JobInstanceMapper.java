@@ -10,8 +10,14 @@ import com.helloJob.model.job.JobInstance;
 
 public interface JobInstanceMapper extends BaseMapper<JobInstance> {
 
-	List<Long> getRelyJobFailInstance(@Param("jobId") Long jobId,@Param("dt") Integer dt);
+	List<Long> getRelyJobFailInstance(@Param("jobId") Long jobId,@Param("dt") String dt);
+	
+	void setTriggerWay(@Param("jobId") Long jobId,@Param("dt") String dt,@Param("triggerWay") String triggerWay);
 
-	void delete(@Param("jobIds") Set<Long> jobIds,@Param("dt")  Integer dt);
+	String getTriggerWay(@Param("jobId") Long jobId,@Param("dt") String dt);
+	
+	void delete(@Param("jobIds") Set<Long> jobIds,@Param("dt")  String dt);
+	
+	void setUpdateTime(@Param("jobId") Long jobId,@Param("dt") String dt);
 
 }

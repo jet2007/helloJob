@@ -3,16 +3,39 @@
 <mapper namespace="com.helloJob.mapper.job.JobLogMapper">
 
     <select id="grid" resultType="com.helloJob.vto.JobLogVto" >
-select id,job_id jobId,job_state jobState,dt,begin_time beginTime,end_time endTime, job_img jobImg from job_log
+    select a.ID
+          ,a.job_id jobId
+          ,a.job_state jobState
+          ,a.dt
+          ,a.begin_time beginTime
+          ,a.end_time endTime
+          ,a.job_img jobImg 
+          , b.job_name AS jobName
+          , b.job_group AS jobGroup
+     FROM job_log a
+LEFT JOIN job_basic_info b
+       ON a.job_id=b.id 
+LEFT JOIN (SELECT distinct job_id
+           FROM   `job_owner`
+           WHERE  user_id = #{loginUserId} ) t6
+  ON a.job_id = t6.job_id 
+       
 where 1=1
+       AND ( b.creater = #{loginUserId}  OR t6.job_id IS NOT NULL ) 
   <if test=" jobId != null "> <![CDATA[  
-    	and job_id =#{jobId}
+    	and a.job_id =#{jobId}
      ]]></if>
      <if test=" dt != null "> <![CDATA[  
-    	and dt =#{dt}
+    	and a.dt like concat('%',#{dt},'%')
      ]]></if>
       <if test=" jobState != null and jobSate !='' "> <![CDATA[  
-    	and job_state =#{jobState}
+    	and a.job_state =#{jobState}
+     ]]></if>
+     <if test=" jobName != null and jobName !='' "> <![CDATA[  
+    	and b.job_name  like concat('%',#{jobName},'%')
+     ]]></if>
+     <if test=" jobGroup != null and jobGroup !='' "> <![CDATA[  
+    	and b.job_group  like concat('%',#{jobGroup},'%')
      ]]></if>
     </select> 
     
